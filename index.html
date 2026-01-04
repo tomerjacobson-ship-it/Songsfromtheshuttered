@@ -41,16 +41,8 @@
       flex-wrap:wrap;
     }
 
-    h1{
-      margin:0;
-      font-weight:600;
-    }
-
-    p.lead{
-      margin:0;
-      color:var(--muted);
-      font-size:0.95rem;
-    }
+    h1{margin:0;font-weight:600}
+    p.lead{margin:0;color:var(--muted);font-size:0.95rem}
 
     .close-btn{
       background:transparent;
@@ -62,7 +54,6 @@
       font-size:0.9rem;
     }
 
-    /* Grid */
     .grid{
       display:grid;
       grid-auto-flow:column;
@@ -81,7 +72,6 @@
       transition:transform 160ms ease, box-shadow 160ms ease;
       display:flex;
       flex-direction:column;
-      height:100%;
     }
 
     figure:hover{
@@ -89,19 +79,8 @@
       box-shadow:0 18px 36px rgba(2,6,10,0.7);
     }
 
-    .thumb{
-      flex:1;
-      position:relative;
-      background:#000;
-    }
-
-    .thumb img{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
+    .thumb{flex:1;position:relative;background:#000}
+    .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
     figcaption{
       padding:10px 12px;
@@ -113,7 +92,6 @@
       text-overflow:ellipsis;
     }
 
-    /* Modal (shared) */
     .modal{
       position:fixed;
       inset:0;
@@ -124,8 +102,7 @@
       z-index:1000;
       padding:24px;
     }
-
-    .modal.open{ display:flex; }
+    .modal.open{display:flex}
 
     .modal-content{
       max-width:92%;
@@ -153,319 +130,178 @@
       align-items:center;
     }
 
-    /* Contact form styles */
     .contact-body{
       padding:18px;
-      color:var(--muted);
       min-width:320px;
       max-width:720px;
     }
-    .contact-body label{
-      display:block;
-      font-size:0.9rem;
-      margin:8px 0 6px;
-      color:var(--muted);
-    }
-    .contact-body input[type="text"],
-    .contact-body input[type="email"],
-    .contact-body textarea{
-      width:100%;
-      padding:10px;
-      border-radius:6px;
-      border:1px solid rgba(255,255,255,0.06);
-      background:transparent;
-      color:var(--accent);
-      font-size:0.95rem;
-      box-sizing:border-box;
-    }
-    .contact-actions{
-      display:flex;
-      gap:8px;
-      justify-content:flex-end;
-      padding:12px 18px 18px;
-    }
 
-    /* Contact modal specific */
     .email-list{
       display:flex;
       flex-direction:column;
       gap:10px;
-      margin-top:8px;
+      margin-top:10px;
     }
+
     .email-row{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
       gap:12px;
+      align-items:center;
     }
+
     .email-text{
+      flex:1;
       background:rgba(255,255,255,0.02);
       border:1px solid rgba(255,255,255,0.04);
       padding:12px 14px;
       border-radius:8px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-      color:var(--accent);
+      font-family:ui-monospace, monospace;
       font-size:1rem;
       overflow-wrap:anywhere;
-      flex:1;
-    }
-    .email-actions{
-      display:flex;
-      gap:8px;
-      margin-left:12px;
-      white-space:nowrap;
     }
 
-    .contact-actions .close-btn{
-      border-radius:6px;
-    }
-    .muted-small{
-      color:var(--muted);
-      font-size:0.95rem;
-    }
+    .email-actions{white-space:nowrap}
 
-    @media (max-width:920px){
-      :root{ --row-height:160px; }
-    }
-
-    @media (max-width:640px){
-      :root{ --row-height:120px; }
-      .grid{ grid-auto-columns:minmax(140px,1fr); }
-      .email-row{ flex-direction:column; align-items:flex-start; }
-      .email-actions{ margin-left:0; }
+    @media(max-width:640px){
+      :root{--row-height:120px}
+      .grid{grid-auto-columns:minmax(140px,1fr)}
+      .email-row{flex-direction:column;align-items:flex-start}
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>Songs from the Shuttered</h1>
-        <p class="lead">Fine art project dedicated to songs.</p>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <button id="bookBtn" class="close-btn" aria-label="Open book PDF">Read Book</button>
-        <button id="aboutBtn" class="close-btn">About</button>
-        <button id="contactBtn" class="close-btn">Contact</button>
-             </div>
-    </header>
-
-    <main>
-      <section class="grid" id="gallery"></section>
-    </main>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Songs from the Shuttered</h1>
+    <p class="lead">Fine art project dedicated to songs.</p>
   </div>
+  <div style="display:flex;gap:10px">
+    <button id="bookBtn" class="close-btn">Read Book</button>
+    <button id="aboutBtn" class="close-btn">About</button>
+    <button id="contactBtn" class="close-btn">Contact</button>
+  </div>
+</header>
 
-  <!-- Image Modal -->
-  <div id="modal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <img id="modalImg" class="modal-img" src="" alt="">
-      <div class="modal-footer">
-        <div id="modalCaption"></div>
-        <button id="closeBtn" class="close-btn">Close</button>
+<main>
+  <section class="grid" id="gallery"></section>
+</main>
+</div>
+
+<!-- Image Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <img id="modalImg" class="modal-img">
+    <div class="modal-footer">
+      <div id="modalCaption"></div>
+      <button class="close-btn" id="closeImg">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <div style="padding:20px">
+      <h2>About</h2>
+      <p>
+        Created by Tomer Jacobson & Maxim Golovanov.<br>
+        A fusion of visual art and music exploring song lyrics.
+      </p>
+      <button class="close-btn" id="aboutClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <div class="contact-body">
+      <h2>Contact</h2>
+      <p style="color:var(--muted)">For inquiries or press:</p>
+      <div id="emailsList" class="email-list"></div>
+      <div style="text-align:right;margin-top:12px">
+        <button class="close-btn" id="contactClose">Close</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- About Modal -->
-  <div id="aboutModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <div style="padding:20px; line-height:1.6;">
-        <h2>About</h2>
-        <p>
-Created by Tomer Jacobson & Maxim Golovanov, <br>
-          "Songs from the Shuttered" is a fusion of visual art and music that seeks to explore the symbiotic relationship between the two disciplines. 
-        </p>
-        <p>
-        Through staged models, lighting and dynamic compositions, each photograph offers a captivating examination of different song lyrics. 
-        </p>
-        <button id="aboutCloseBtn" class="close-btn">Close</button>
-      </div>
-    </div>
-  </div>
+<script>
+const images=[
+  "Her lies.jpg","The Power of love.jpg","Hallowed be thy name.jpg","society.jpg",
+  "Fake Empire.jpg","Where to now St. Peter.jpg","After the gold rush.jpg","Mercy Seat.jpg",
+  "I am waiting for my man.jpg","Weak.jpg","Cortez the killer.jpg","Flume.jpg",
+  "Hey Joe.jpg","The good son.jpg","One more cup of coffee.jpg","Lost in the flood.jpg"
+];
 
-  <!-- Contact Modal (updated to show multiple contacts) -->
-  <div id="contactModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <div class="contact-body">
-        <h2>Contact</h2>
-        <p class="muted-small">For inquiries, commissions, or press — reach out via email:</p>
+const CONTACT_EMAILS=[
+  "tomer.jacobson@gmail.com",
+  "maxim.golovanov.1990@gmail.com"
+];
 
-        <div id="emailsList" class="email-list" aria-live="polite"></div>
+const gallery=document.getElementById("gallery");
+const modal=document.getElementById("modal");
+const modalImg=document.getElementById("modalImg");
+const modalCaption=document.getElementById("modalCaption");
 
-        <div class="contact-actions" style="margin-top:12px;">
-          <div style="flex:1"></div>
-          <button id="contactCloseBtn" class="close-btn">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+function caption(name){return name.replace(/\.[^.]+$/,"");}
 
-  <script>
-    const images = [
-      "Her lies.jpg",
-      "The Power of love.jpg",
-      "Hallowed be thy name.jpg",
-      "society.jpg",
-      "Fake Empire.jpg",
-      "Where to now St. Peter.jpg",
-      "After the gold rush.jpg",
-      "Mercy Seat.jpg",
-      "I am waiting for my man.jpg",
-      "Weak.jpg",
-      "Cortez the killer.jpg",
-      "Flume.jpg",
-      "Hey Joe.jpg",
-      "The good son.jpg",
-      "One more cup of coffee.jpg",
-      "Lost in the flood.jpg"
-    ];
+images.forEach(n=>{
+  const f=document.createElement("figure");
+  f.innerHTML=`
+    <div class="thumb"><img src="images/${encodeURI(n)}"></div>
+    <figcaption>${caption(n)}</figcaption>`;
+  f.onclick=()=>{
+    modalImg.src="images/"+encodeURI(n);
+    modalCaption.textContent=caption(n);
+    modal.classList.add("open");
+  };
+  gallery.appendChild(f);
+});
 
-    const gallery = document.getElementById('gallery');
-    const modal = document.getElementById('modal');
-    const modalImg = document.getElementById('modalImg');
-    const modalCaption = document.getElementById('modalCaption');
-    const closeBtn = document.getElementById('closeBtn');
+document.getElementById("closeImg").onclick=()=>modal.classList.remove("open");
+modal.onclick=e=>e.target===modal&&modal.classList.remove("open");
 
-    const aboutBtn = document.getElementById('aboutBtn');
-    const aboutModal = document.getElementById('aboutModal');
-    const aboutCloseBtn = document.getElementById('aboutCloseBtn');
+document.getElementById("aboutBtn").onclick=()=>aboutModal.classList.add("open");
+document.getElementById("aboutClose").onclick=()=>aboutModal.classList.remove("open");
+aboutModal.onclick=e=>e.target===aboutModal&&aboutModal.classList.remove("open");
 
-    const bookBtn = document.getElementById('bookBtn');
+document.getElementById("bookBtn").onclick=()=>window.open("SFTS.pdf","_blank");
 
-    // Contact elements (updated)
-    const contactBtn = document.getElementById('contactBtn');
-    const contactModal = document.getElementById('contactModal');
-    const contactCloseBtn = document.getElementById('contactCloseBtn');
-    const emailsList = document.getElementById('emailsList');
-
-    const CONTACT_EMAILS = [
-      'tomer.jacobson@gmail.com',
-      'maxim.golovanov.1990@gmail.com'
-    ];
-
-    function captionFromFilename(name){
-      return name.replace(/\.[^.]+$/, '').trim();
-    }
-
-    images.forEach(name => {
-      const fig = document.createElement('figure');
-      fig.innerHTML = `
-        <div class="thumb">
-          <img src="images/${encodeURI(name)}" alt="${captionFromFilename(name)}">
-        </div>
-        <figcaption>${captionFromFilename(name)}</figcaption>
-      `;
-
-      fig.addEventListener('click', () => {
-        modalImg.src = 'images/' + encodeURI(name);
-        modalCaption.textContent = captionFromFilename(name);
-        openModal(modal);
-      });
-
-      gallery.appendChild(fig);
-    });
-
-    function openModal(el){
-      if (!el) return;
-      el.classList.add('open');
-      el.setAttribute('aria-hidden', 'false');
-    }
-
-    function closeModal(el){
-      if (!el) return;
-      el.classList.remove('open');
-      el.setAttribute('aria-hidden', 'true');
-    }
-
-    function closeImageModal(){
-      closeModal(modal);
-      modalImg.src = '';
-    }
-
-    closeBtn.onclick = closeImageModal;
-    modal.onclick = e => e.target === modal && closeImageModal();
-
-    aboutBtn.onclick = () => openModal(aboutModal);
-    aboutCloseBtn.onclick = () => closeModal(aboutModal);
-    aboutModal.onclick = e => e.target === aboutModal && closeModal(aboutModal);
-
-    // Open the uploaded PDF (SFTS.pdf) when Book is clicked.
-    bookBtn.addEventListener('click', () => {
-      // The PDF is expected to be in the site root (same directory as index.html).
-      const win = window.open('SFTS.pdf', '_blank');
-      if (win) win.opener = null;
-    });
-
-    // Render contact emails into the modal (creates per-email actions)
-    function renderContactEmails() {
-      emailsList.innerHTML = '';
-      CONTACT_EMAILS.forEach(email => {
-        const row = document.createElement('div');
-        row.className = 'email-row';
-
-        const text = document.createElement('div');
-        text.className = 'email-text';
-        text.textContent = email;
-
-        const actions = document.createElement('div');
-        actions.className = 'email-actions';
-
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'close-btn';
-        copyBtn.type = 'button';
-        copyBtn.textContent = 'Copy';
-        copyBtn.title = 'Copy email to clipboard';
-        copyBtn.addEventListener('click', async () => {
-          try {
-            await navigator.clipboard.writeText(email);
-            const prev = copyBtn.textContent;
-            copyBtn.textContent = 'Copied!';
-            setTimeout(() => copyBtn.textContent = prev, 1500);
-          } catch (err) {
-            // fallback
-            try {
-              const range = document.createRange();
-              range.selectNode(text);
-              window.getSelection().removeAllRanges();
-              window.getSelection().addRange(range);
-              document.execCommand('copy');
-              window.getSelection().removeAllRanges();
-              const prev = copyBtn.textContent;
-              copyBtn.textContent = 'Copied!';
-              setTimeout(() => copyBtn.textContent = prev, 1500);
-            } catch (e) {
-              alert('Unable to copy email automatically. Please copy: ' + email);
-            }
-          }
-        });
-
-       
-        actions.appendChild(copyBtn);
-        actions.appendChild(openBtn);
-
-        row.appendChild(text);
-        row.appendChild(actions);
-
-        emailsList.appendChild(row);
-      });
-    }
-
-    // Contact modal behaviour
-    contactBtn.onclick = () => {
-      renderContactEmails();
-      openModal(contactModal);
+function renderEmails(){
+  emailsList.innerHTML="";
+  CONTACT_EMAILS.forEach(email=>{
+    const row=document.createElement("div");
+    row.className="email-row";
+    row.innerHTML=`
+      <div class="email-text">${email}</div>
+      <div class="email-actions">
+        <button class="close-btn">Copy</button>
+      </div>`;
+    row.querySelector("button").onclick=async()=>{
+      await navigator.clipboard.writeText(email);
+      alert("Email copied");
     };
-    contactCloseBtn.onclick = () => closeModal(contactModal);
-    contactModal.onclick = e => e.target === contactModal && closeModal(contactModal);
+    emailsList.appendChild(row);
+  });
+}
 
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape'){
-        closeImageModal();
-        closeModal(aboutModal);
-        closeModal(contactModal);
-      }
-    });
-  </script>
+contactBtn.onclick=()=>{
+  renderEmails();
+  contactModal.classList.add("open");
+};
+contactClose.onclick=()=>contactModal.classList.remove("open");
+contactModal.onclick=e=>e.target===contactModal&&contactModal.classList.remove("open");
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    modal.classList.remove("open");
+    aboutModal.classList.remove("open");
+    contactModal.classList.remove("open");
+  }
+});
+</script>
 </body>
 </html>
