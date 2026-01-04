@@ -186,20 +186,36 @@
     }
 
     /* Contact modal specific */
-    .email-display{
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.04);
-      padding:14px 16px;
-      border-radius:8px;
+    .email-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:8px;
+    }
+    .email-row{
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap:12px;
-      margin-top:8px;
+    }
+    .email-text{
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:12px 14px;
+      border-radius:8px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
       color:var(--accent);
       font-size:1rem;
       overflow-wrap:anywhere;
+      flex:1;
     }
+    .email-actions{
+      display:flex;
+      gap:8px;
+      margin-left:12px;
+      white-space:nowrap;
+    }
+
     .contact-actions .close-btn{
       border-radius:6px;
     }
@@ -215,6 +231,8 @@
     @media (max-width:640px){
       :root{ --row-height:120px; }
       .grid{ grid-auto-columns:minmax(140px,1fr); }
+      .email-row{ flex-direction:column; align-items:flex-start; }
+      .email-actions{ margin-left:0; }
     }
   </style>
 </head>
@@ -266,21 +284,17 @@ Created by Tomer Jacobson & Maxim Golovanov, <br>
     </div>
   </div>
 
-  <!-- Contact Modal (new) -->
+  <!-- Contact Modal (updated to show multiple contacts) -->
   <div id="contactModal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <div class="contact-body">
         <h2>Contact</h2>
         <p class="muted-small">For inquiries, commissions, or press — reach out via email:</p>
 
-        <div class="email-display" aria-live="polite">
-          <span id="contactEmailDisplay">tomer.jacobson@gmail.com</span>
-        </div>
+        <div id="emailsList" class="email-list" aria-live="polite"></div>
 
         <div class="contact-actions" style="margin-top:12px;">
           <div style="flex:1"></div>
-          <button id="copyEmailBtn" class="close-btn" title="Copy email to clipboard">Copy</button>
-          <button id="openEmailBtn" class="close-btn" title="Open your mail app">Open in Mail App</button>
           <button id="contactCloseBtn" class="close-btn">Close</button>
         </div>
       </div>
@@ -319,15 +333,16 @@ Created by Tomer Jacobson & Maxim Golovanov, <br>
 
     const bookBtn = document.getElementById('bookBtn');
 
-    // Contact elements (new)
+    // Contact elements (updated)
     const contactBtn = document.getElementById('contactBtn');
     const contactModal = document.getElementById('contactModal');
     const contactCloseBtn = document.getElementById('contactCloseBtn');
-    const contactEmailEl = document.getElementById('contactEmailDisplay');
-    const copyBtn = document.getElementById('copyEmailBtn');
-    const openMailBtn = document.getElementById('openEmailBtn');
+    const emailsList = document.getElementById('emailsList');
 
-    const CONTACT_EMAIL = 'tomer.jacobson@gmail.com';
+    const CONTACT_EMAILS = [
+      'tomer.jacobson@gmail.com',
+      'maxim.golovanov.1990@gmail.com'
+    ];
 
     function captionFromFilename(name){
       return name.replace(/\.[^.]+$/, '').trim();
@@ -382,46 +397,77 @@ Created by Tomer Jacobson & Maxim Golovanov, <br>
       if (win) win.opener = null;
     });
 
-    // Contact modal behaviour (new)
+    // Render contact emails into the modal (creates per-email actions)
+    function renderContactEmails() {
+      emailsList.innerHTML = '';
+      CONTACT_EMAILS.forEach(email => {
+        const row = document.createElement('div');
+        row.className = 'email-row';
+
+        const text = document.createElement('div');
+        text.className = 'email-text';
+        text.textContent = email;
+
+        const actions = document.createElement('div');
+        actions.className = 'email-actions';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'close-btn';
+        copyBtn.type = 'button';
+        copyBtn.textContent = 'Copy';
+        copyBtn.title = 'Copy email to clipboard';
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(email);
+            const prev = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => copyBtn.textContent = prev, 1500);
+          } catch (err) {
+            // fallback
+            try {
+              const range = document.createRange();
+              range.selectNode(text);
+              window.getSelection().removeAllRanges();
+              window.getSelection().addRange(range);
+              document.execCommand('copy');
+              window.getSelection().removeAllRanges();
+              const prev = copyBtn.textContent;
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => copyBtn.textContent = prev, 1500);
+            } catch (e) {
+              alert('Unable to copy email automatically. Please copy: ' + email);
+            }
+          }
+        });
+
+        const openBtn = document.createElement('button');
+        openBtn.className = 'close-btn';
+        openBtn.type = 'button';
+        openBtn.textContent = 'Open in Mail App';
+        openBtn.title = 'Open your mail app';
+        openBtn.addEventListener('click', () => {
+          const mailto = `mailto:${encodeURIComponent(email)}`;
+          const win = window.open(mailto, '_blank');
+          if (win) win.opener = null;
+        });
+
+        actions.appendChild(copyBtn);
+        actions.appendChild(openBtn);
+
+        row.appendChild(text);
+        row.appendChild(actions);
+
+        emailsList.appendChild(row);
+      });
+    }
+
+    // Contact modal behaviour
     contactBtn.onclick = () => {
-      // update email display (in case it changes)
-      if (contactEmailEl) contactEmailEl.textContent = CONTACT_EMAIL;
+      renderContactEmails();
       openModal(contactModal);
     };
     contactCloseBtn.onclick = () => closeModal(contactModal);
     contactModal.onclick = e => e.target === contactModal && closeModal(contactModal);
-
-    // Copy email to clipboard
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(CONTACT_EMAIL);
-        const original = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
-        setTimeout(() => copyBtn.textContent = original, 1500);
-      } catch (err) {
-        // fallback: select and prompt
-        try {
-          const range = document.createRange();
-          range.selectNode(contactEmailEl);
-          window.getSelection().removeAllRanges();
-          window.getSelection().addRange(range);
-          document.execCommand('copy');
-          window.getSelection().removeAllRanges();
-          const original = copyBtn.textContent;
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => copyBtn.textContent = original, 1500);
-        } catch (e) {
-          alert('Unable to copy email automatically. Please copy: ' + CONTACT_EMAIL);
-        }
-      }
-    });
-
-    // Open mail client with prefilled recipient (no subject/body)
-    openMailBtn.addEventListener('click', () => {
-      const mailto = `mailto:${encodeURIComponent(CONTACT_EMAIL)}`;
-      const win = window.open(mailto, '_blank');
-      if (win) win.opener = null;
-    });
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape'){
