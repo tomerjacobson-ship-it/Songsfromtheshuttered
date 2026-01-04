@@ -153,6 +153,38 @@
       align-items:center;
     }
 
+    /* Contact form styles */
+    .contact-body{
+      padding:18px;
+      color:var(--muted);
+      min-width:320px;
+      max-width:720px;
+    }
+    .contact-body label{
+      display:block;
+      font-size:0.9rem;
+      margin:8px 0 6px;
+      color:var(--muted);
+    }
+    .contact-body input[type="text"],
+    .contact-body input[type="email"],
+    .contact-body textarea{
+      width:100%;
+      padding:10px;
+      border-radius:6px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;
+      color:var(--accent);
+      font-size:0.95rem;
+      box-sizing:border-box;
+    }
+    .contact-actions{
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+      padding:12px 18px 18px;
+    }
+
     @media (max-width:920px){
       :root{ --row-height:160px; }
     }
@@ -174,6 +206,7 @@
       <div style="display:flex; gap:10px; align-items:center;">
         <button id="bookBtn" class="close-btn" aria-label="Open book PDF">Read Book</button>
         <button id="aboutBtn" class="close-btn">About</button>
+        <button id="contactBtn" class="close-btn">Contact</button>
       </div>
     </header>
 
@@ -203,9 +236,33 @@ Created by Tomer Jacobson & Maxim Golovanov, <br>
           Songs from the Shuttered" is a fusion of visual art and music that seeks to explore the symbiotic relationship between the two disciplines. 
         </p>
         <p>
-        Through staged models, lighting and dynamic compositions, each photograph offers a captivating examination of different song lyrics. Drawing from classical art references, this collection prompts music and art lovers alike to delve into the nuanced relationship between lyrical themes and visual imagery. “Songs from the Shuttered” is deeply rooted in classics from art history, with many photographs referencing to iconic artworks.
+        Through staged models, lighting and dynamic compositions, each photograph offers a captivating examination of different song lyrics. Drawing from classical art references, this collection prom[...]
         </p>
         <button id="aboutCloseBtn" class="close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div id="contactModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <div class="contact-body">
+        <h2>Contact</h2>
+        <form id="contactForm">
+          <label for="contactName">Name</label>
+          <input id="contactName" name="name" type="text" placeholder="Your name" required>
+
+          <label for="contactEmail">Email</label>
+          <input id="contactEmail" name="email" type="email" placeholder="your@email.com" required>
+
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="6" placeholder="Message" required></textarea>
+
+          <div class="contact-actions">
+            <button type="button" id="contactCloseBtn" class="close-btn">Close</button>
+            <button type="submit" class="close-btn" aria-label="Send message">Send</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -241,6 +298,12 @@ Created by Tomer Jacobson & Maxim Golovanov, <br>
     const aboutCloseBtn = document.getElementById('aboutCloseBtn');
 
     const bookBtn = document.getElementById('bookBtn');
+
+    // Contact elements
+    const contactBtn = document.getElementById('contactBtn');
+    const contactModal = document.getElementById('contactModal');
+    const contactCloseBtn = document.getElementById('contactCloseBtn');
+    const contactForm = document.getElementById('contactForm');
 
     function captionFromFilename(name){
       return name.replace(/\.[^.]+$/, '').trim();
@@ -283,10 +346,38 @@ Created by Tomer Jacobson & Maxim Golovanov, <br>
       if (win) win.opener = null;
     });
 
+    // Contact modal behaviour
+    contactBtn.onclick = () => contactModal.classList.add('open');
+    contactCloseBtn.onclick = () => contactModal.classList.remove('open');
+    contactModal.onclick = e => e.target === contactModal && contactModal.classList.remove('open');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+
+      // Construct a mailto: URL to open the user's email client with prefilled fields.
+      const to = 'tomer.jacobson@gmail.com';
+      const subject = `Website contact from ${name || 'Visitor'}`;
+      let body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+
+      const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      // Open user's mail client with the composed message. This will rely on the client system having a mail handler.
+      window.location.href = mailto;
+
+      // Close and reset form
+      contactModal.classList.remove('open');
+      contactForm.reset();
+    });
+
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape'){
         closeImageModal();
         aboutModal.classList.remove('open');
+        contactModal.classList.remove('open');
       }
     });
   </script>
