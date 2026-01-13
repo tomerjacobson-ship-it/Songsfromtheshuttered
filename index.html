@@ -12,8 +12,7 @@
   --muted:#9aa0a6;
   --accent:#e6e6e6;
   --gap:18px;
-  --rows:4;
-  --row-height:190px;
+  --row-height:280px;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
@@ -22,7 +21,7 @@ body{
   margin:0;
   background:linear-gradient(180deg,#070708,#0f1113);
   color:var(--accent);
-  padding:36px;
+  padding:40px 20px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -34,43 +33,49 @@ body{
 header{
   display:flex;
   justify-content:space-between;
+  align-items: flex-start;
   flex-wrap:wrap;
-  gap:18px;
+  gap:20px;
   margin-bottom:40px;
 }
 
-h1{margin:0;font-weight:600}
+h1{margin:0;font-weight:600; font-size: 2rem;}
 p.lead{margin:6px 0 0;color:var(--muted);max-width:520px}
 
 button{
   background:transparent;
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
   color:var(--accent);
-  padding:8px 14px;
+  padding:10px 18px;
   border-radius:6px;
   cursor:pointer;
+  transition: background 0.2s;
+}
+
+button:hover{
+  background: rgba(255,255,255,0.05);
 }
 
 /* ---------- INTRO ---------- */
 .intro{
   max-width:720px;
   margin-bottom:60px;
-  font-size:1rem;
+  font-size:1.1rem;
   line-height:1.7;
   color:var(--muted);
 }
 
 /* ---------- GALLERY ---------- */
-.gallery-scroll{
-  overflow-x:auto;
-  margin-bottom:80px;
+/* Removed overflow-x: auto to fix horizontal scrolling issue */
+.gallery-container {
+  width: 100%;
+  margin-bottom: 80px;
 }
 
 .grid{
   display:grid;
-  grid-auto-flow:column;
-  grid-auto-columns:minmax(220px,1fr);
-  grid-template-rows:repeat(var(--rows), var(--row-height));
+  /* This creates a responsive grid that wraps to new lines */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap:var(--gap);
 }
 
@@ -80,14 +85,19 @@ figure{
   border-radius:8px;
   overflow:hidden;
   cursor:pointer;
-  transition:.2s;
+  transition:.3s cubic-bezier(0.4, 0, 0.2, 1);
   display:flex;
   flex-direction:column;
+  height: var(--row-height);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-figure:hover{transform:translateY(-6px)}
+figure:hover{
+  transform:translateY(-8px);
+  border-color: rgba(255,255,255,0.2);
+}
 
-.thumb{flex:1;position:relative;background:#000}
+.thumb{flex:1;position:relative;background:#000; overflow: hidden;}
 .thumb img{
   position:absolute;
   inset:0;
@@ -97,9 +107,11 @@ figure:hover{transform:translateY(-6px)}
 }
 
 figcaption{
-  padding:10px 12px;
+  padding:12px;
   font-size:.9rem;
+  font-weight: 500;
   color:var(--muted);
+  background: #0e1012;
   border-top:1px solid rgba(255,255,255,.05);
 }
 
@@ -109,7 +121,7 @@ figcaption{
 }
 
 .bts h2{
-  margin-bottom:20px;
+  margin-bottom:24px;
   font-weight:500;
 }
 
@@ -155,11 +167,12 @@ figcaption{
   position:fixed;
   inset:0;
   display:none;
-  background:rgba(0,0,0,.9);
+  background:rgba(0,0,0,.92);
   align-items:center;
   justify-content:center;
   z-index:1000;
   padding:20px;
+  backdrop-filter: blur(5px);
 }
 
 .modal.open{display:flex}
@@ -167,19 +180,19 @@ figcaption{
 .modal-content{
   background:var(--card);
   border-radius:12px;
-  width:95%;
-  max-width:1100px;
-  max-height:95vh;
+  width:100%;
+  max-width:1000px;
+  max-height:90vh;
   overflow:hidden;
   display:flex;
   flex-direction:column;
   position:relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
-/* Image + Audio */
 .modal-img{
   width:100%;
-  max-height:65vh;
+  flex: 1;
   object-fit:contain;
   background:#000;
 }
@@ -192,9 +205,13 @@ figcaption{
   gap:10px;
 }
 
+#nowPlaying {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 audio{width:100%}
 
-/* PDF */
 .pdf-frame{
   width:100%;
   height:80vh;
@@ -213,7 +230,7 @@ audio{width:100%}
 /* ---------- FOOTER ---------- */
 footer{
   width:100%;
-  padding:20px;
+  padding:40px 20px;
   text-align:center;
   color:var(--muted);
   border-top:1px solid rgba(255,255,255,.05);
@@ -225,45 +242,53 @@ footer a{
   text-decoration:none;
 }
 
-footer a:hover{
-  text-decoration:underline;
-}
-
 /* ---------- CONTACT MODAL ---------- */
 .contact-container{
   display:flex;
   flex-direction:column;
   align-items:center;
   gap:10px;
-  padding:30px;
+  padding:40px 20px;
   font-size:1rem;
   color:var(--accent);
 }
 
 .contact-container input{
-  width:250px;
+  width:100%;
+  max-width:300px;
   text-align:center;
-  padding:8px;
+  padding:12px;
   border-radius:6px;
   border:none;
+  background: #eee;
   font-size:1rem;
   color:#000;
 }
 
 .contact-container button{
-  width:100px;
-  padding:8px;
-  border-radius:6px;
-  border:none;
-  cursor:pointer;
+  width:120px;
   background:var(--accent);
   color:#000;
   font-weight:bold;
+  border: none;
 }
 
+/* ---------- MOBILE ADJUSTMENTS ---------- */
 @media(max-width:640px){
-  :root{--row-height:120px}
-  .grid{grid-auto-columns:minmax(140px,1fr)}
+  :root{--row-height:220px}
+  
+  body { padding: 30px 15px; }
+  
+  header { flex-direction: column; gap: 15px; }
+  
+  h1 { font-size: 1.6rem; }
+  
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  
+  .modal-content { width: 100%; height: auto; }
 }
 </style>
 </head>
@@ -282,26 +307,18 @@ footer a:hover{
   </div>
 </header>
 
-<!-- INTRO TEXT -->
 <section class="intro">
   <p>
     <em>Songs from the Shuttered</em> is a staged photographic series translating
-    songs into still images. Each photograph responds to a specific song, treating
-    music as narrative rather than soundtrack.
-  </p>
-  <p>
-    The images are constructed through mise-en-scène, live models, and controlled
-    lighting, drawing on cinematic and art-historical references. The project explores
-    how memory and emotion migrate between sound and image.
+    music into still images. Each photograph responds to a specific song, treating
+    the lyrics as a narrative script.
   </p>
 </section>
 
-<!-- GALLERY -->
-<div class="gallery-scroll">
+<div class="gallery-container">
   <section class="grid" id="gallery"></section>
 </div>
 
-<!-- BTS -->
 <section class="bts">
   <h2>Behind the Scenes</h2>
   <div class="video-grid">
@@ -324,7 +341,6 @@ footer a:hover{
 
 </div>
 
-<!-- IMAGE + AUDIO MODAL -->
 <div id="imageModal" class="modal">
   <div class="modal-content">
     <img id="modalImg" class="modal-img">
@@ -340,7 +356,6 @@ footer a:hover{
   </div>
 </div>
 
-<!-- PDF MODAL -->
 <div id="pdfModal" class="modal">
   <div class="modal-content">
     <iframe class="pdf-frame" src="RECORD.pdf"></iframe>
@@ -350,14 +365,13 @@ footer a:hover{
   </div>
 </div>
 
-<!-- CONTACT MODAL -->
 <div id="contactModal" class="modal">
   <div class="modal-content">
     <div class="contact-container">
       <p>My email:</p>
       <input type="text" id="contactEmail" value="tomer.jacobson@gmail.com" readonly>
       <button onclick="copyEmail()">Copy</button>
-      <p id="copyMsg" style="color:var(--muted);font-size:0.9rem;"></p>
+      <p id="copyMsg" style="color:var(--muted);font-size:0.9rem; margin-top:10px;"></p>
     </div>
     <div class="modal-footer">
       <button onclick="closeContact()">Close</button>
@@ -365,13 +379,11 @@ footer a:hover{
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <p>Contact: <a href="mailto:tomer.jacobson@gmail.com">tomer.jacobson@gmail.com</a></p>
 </footer>
 
 <script>
-/* -------- GALLERY & AUDIO MODAL -------- */
 const images=[
   "Her lies.jpg","The Power of love.jpg","Hallowed.jpg","society.jpg",
   "Fake Empire.jpg","Peter.jpg","After the gold rush.jpg","Mercy Seat.jpg",
@@ -394,7 +406,7 @@ images.forEach(n=>{
   const f=document.createElement("figure");
   f.innerHTML=`
     <div class="thumb">
-      <img src="images/${encodeURI(n)}" alt="${caption(n)}">
+      <img src="images/${encodeURI(n)}" alt="${caption(n)}" loading="lazy">
     </div>
     <figcaption>${caption(n)}</figcaption>
   `;
@@ -404,6 +416,7 @@ images.forEach(n=>{
     nowPlaying.textContent=caption(n);
     audioPlayer.load();
     imageModal.classList.add("open");
+    document.body.style.overflow = "hidden"; // Prevent background scroll
   };
   gallery.appendChild(f);
 });
@@ -412,24 +425,44 @@ function closeImage(){
   imageModal.classList.remove("open");
   audioPlayer.pause();
   audioPlayer.currentTime=0;
+  document.body.style.overflow = "auto";
 }
 
-/* -------- PDF MODAL -------- */
-function closePDF(){ pdfModal.classList.remove("open"); }
+function closePDF(){ 
+  pdfModal.classList.remove("open"); 
+  document.body.style.overflow = "auto";
+}
 
-/* -------- CONTACT MODAL -------- */
-function closeContact(){ contactModal.classList.remove("open"); }
+function closeContact(){ 
+  contactModal.classList.remove("open"); 
+  document.body.style.overflow = "auto";
+}
+
 function copyEmail(){
   const input = document.getElementById("contactEmail");
   input.select();
   input.setSelectionRange(0,99999);
-  document.execCommand("copy");
+  navigator.clipboard.writeText(input.value);
   document.getElementById("copyMsg").textContent = "Copied to clipboard!";
 }
 
-/* -------- BUTTON EVENTS -------- */
-document.getElementById("bookBtn").onclick=()=>{ pdfModal.classList.add("open"); };
-document.getElementById("contactBtn").onclick=()=>{ contactModal.classList.add("open"); };
+document.getElementById("bookBtn").onclick=()=>{ 
+  pdfModal.classList.add("open"); 
+  document.body.style.overflow = "hidden";
+};
+document.getElementById("contactBtn").onclick=()=>{ 
+  contactModal.classList.add("open"); 
+  document.body.style.overflow = "hidden";
+};
+
+// Close modal on background click
+window.onclick = (event) => {
+  if (event.target.classList.contains('modal')) {
+    closeImage();
+    closePDF();
+    closeContact();
+  }
+};
 </script>
 
 </body>
