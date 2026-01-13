@@ -25,3 +25,12 @@ The website is hosted here: [Songs from the Shuttered](https://tomer-jacobson.gi
 
 ## 📂 Repository Structure
 
+Songsfromtheshuttered/
+│
+├─ index.html # Main website
+├─ RECORD.pdf # Project book
+├─ images/ # Gallery images
+├─ music/ # Audio files for each song
+└─ README.md # Project description
+
+For inquiries or collaborations, reach out via email: tomer.jacobson@gmail.com
