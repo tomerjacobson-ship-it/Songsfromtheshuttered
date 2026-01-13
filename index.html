@@ -173,6 +173,7 @@ figcaption{
   overflow:hidden;
   display:flex;
   flex-direction:column;
+  position:relative;
 }
 
 /* Image + Audio */
@@ -206,6 +207,7 @@ audio{width:100%}
   border-top:1px solid rgba(255,255,255,.05);
   display:flex;
   justify-content:flex-end;
+  gap:10px;
 }
 
 /* ---------- FOOTER ---------- */
@@ -225,6 +227,38 @@ footer a{
 
 footer a:hover{
   text-decoration:underline;
+}
+
+/* ---------- CONTACT MODAL ---------- */
+.contact-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  padding:30px;
+  font-size:1rem;
+  color:var(--accent);
+}
+
+.contact-container input{
+  width:250px;
+  text-align:center;
+  padding:8px;
+  border-radius:6px;
+  border:none;
+  font-size:1rem;
+  color:#000;
+}
+
+.contact-container button{
+  width:100px;
+  padding:8px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  background:var(--accent);
+  color:#000;
+  font-weight:bold;
 }
 
 @media(max-width:640px){
@@ -316,12 +350,28 @@ footer a:hover{
   </div>
 </div>
 
+<!-- CONTACT MODAL -->
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <div class="contact-container">
+      <p>My email:</p>
+      <input type="text" id="contactEmail" value="tomer.jacobson@gmail.com" readonly>
+      <button onclick="copyEmail()">Copy</button>
+      <p id="copyMsg" style="color:var(--muted);font-size:0.9rem;"></p>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeContact()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p>Contact: <a href="mailto:tomer.jacobson@gmail.com">tomer.jacobson@gmail.com</a></p>
 </footer>
 
 <script>
+/* -------- GALLERY & AUDIO MODAL -------- */
 const images=[
   "Her lies.jpg","The Power of love.jpg","Hallowed be thy name.jpg","society.jpg",
   "Fake Empire.jpg","Where to now St. Peter.jpg","After the gold rush.jpg","Mercy Seat.jpg",
@@ -336,6 +386,7 @@ const audioPlayer=document.getElementById("audioPlayer");
 const audioSource=document.getElementById("audioSource");
 const nowPlaying=document.getElementById("nowPlaying");
 const pdfModal=document.getElementById("pdfModal");
+const contactModal=document.getElementById("contactModal");
 
 const caption=n=>n.replace(/\.[^.]+$/,"");
 
@@ -363,17 +414,22 @@ function closeImage(){
   audioPlayer.currentTime=0;
 }
 
-function closePDF(){
-  pdfModal.classList.remove("open");
+/* -------- PDF MODAL -------- */
+function closePDF(){ pdfModal.classList.remove("open"); }
+
+/* -------- CONTACT MODAL -------- */
+function closeContact(){ contactModal.classList.remove("open"); }
+function copyEmail(){
+  const input = document.getElementById("contactEmail");
+  input.select();
+  input.setSelectionRange(0,99999);
+  document.execCommand("copy");
+  document.getElementById("copyMsg").textContent = "Copied to clipboard!";
 }
 
-document.getElementById("bookBtn").onclick=()=>{
-  pdfModal.classList.add("open");
-};
-
-document.getElementById("contactBtn").onclick=()=>{
-  window.location.href="mailto:tomer.jacobson@gmail.com";
-};
+/* -------- BUTTON EVENTS -------- */
+document.getElementById("bookBtn").onclick=()=>{ pdfModal.classList.add("open"); };
+document.getElementById("contactBtn").onclick=()=>{ contactModal.classList.add("open"); };
 </script>
 
 </body>
