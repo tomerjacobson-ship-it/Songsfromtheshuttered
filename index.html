@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Songs from the Shuttered — Gallery</title>
+<title>Songs from the Shuttered</title>
 
 <style>
 :root{
@@ -20,7 +20,7 @@
 html,body{height:100%}
 body{
   margin:0;
-  background:linear-gradient(180deg,#070708 0%, #0f1113 100%);
+  background:linear-gradient(180deg,#070708,#0f1113);
   color:var(--accent);
   padding:36px;
   display:flex;
@@ -30,20 +30,19 @@ body{
 .wrap{width:100%;max-width:1200px}
 
 header{
-  margin-bottom:24px;
   display:flex;
   justify-content:space-between;
-  gap:18px;
   flex-wrap:wrap;
+  gap:18px;
+  margin-bottom:30px;
 }
 
 h1{margin:0;font-weight:600}
-h2{margin:0 0 12px;font-weight:500}
-p.lead{margin:0;color:var(--muted);font-size:.95rem}
+p.lead{margin:4px 0 0;color:var(--muted)}
 
-.close-btn{
+button{
   background:transparent;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
   color:var(--accent);
   padding:8px 14px;
   border-radius:6px;
@@ -53,7 +52,6 @@ p.lead{margin:0;color:var(--muted);font-size:.95rem}
 /* -------- GALLERY -------- */
 .gallery-scroll{
   overflow-x:auto;
-  padding-bottom:12px;
   margin-bottom:60px;
 }
 
@@ -67,7 +65,7 @@ p.lead{margin:0;color:var(--muted);font-size:.95rem}
 
 figure{
   margin:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
+  background:rgba(255,255,255,.02);
   border-radius:8px;
   overflow:hidden;
   cursor:pointer;
@@ -76,7 +74,7 @@ figure{
   flex-direction:column;
 }
 
-figure:hover{ transform:translateY(-6px); }
+figure:hover{transform:translateY(-6px)}
 
 .thumb{flex:1;position:relative;background:#000}
 .thumb img{
@@ -91,35 +89,7 @@ figcaption{
   padding:10px 12px;
   font-size:.9rem;
   color:var(--muted);
-  border-top:1px solid rgba(255,255,255,.03);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* -------- BTS -------- */
-.bts{margin-bottom:60px}
-.video-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:18px;
-}
-
-.video-card{
-  position:relative;
-  aspect-ratio:16/9;
-  background:#000;
-  border-radius:10px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.05);
-}
-
-.video-card iframe,
-.video-card img{
-  width:100%;
-  height:100%;
-  border:0;
-  object-fit:cover;
+  border-top:1px solid rgba(255,255,255,.05);
 }
 
 /* -------- MODALS -------- */
@@ -139,8 +109,8 @@ figcaption{
 .modal-content{
   background:var(--card);
   border-radius:12px;
-  max-width:1000px;
   width:95%;
+  max-width:1100px;
   max-height:95vh;
   overflow:hidden;
   display:flex;
@@ -161,21 +131,21 @@ figcaption{
   display:flex;
   flex-direction:column;
   gap:10px;
-  align-items:center;
 }
 
-audio{width:100%;height:40px}
+audio{width:100%}
 
-/* TEXT MODAL */
-.text-body{
-  padding:24px;
-  color:var(--muted);
-  line-height:1.7;
+/* PDF MODAL */
+.pdf-frame{
+  width:100%;
+  height:80vh;
+  border:none;
+  background:#000;
 }
 
 .modal-footer{
-  padding:15px 20px;
-  border-top:1px solid rgba(255,255,255,0.05);
+  padding:15px;
+  border-top:1px solid rgba(255,255,255,.05);
   display:flex;
   justify-content:flex-end;
 }
@@ -193,12 +163,12 @@ audio{width:100%;height:40px}
 <header>
   <div>
     <h1>Songs from the Shuttered</h1>
-    <p class="lead">Fine art project dedicated to songs.</p>
+    <p class="lead">Fine art project dedicated to songs</p>
   </div>
   <div style="display:flex;gap:10px">
-    <button id="bookBtn" class="close-btn">Read Book</button>
-    <button id="aboutBtn" class="close-btn">About</button>
-    <button id="contactBtn" class="close-btn">Contact</button>
+    <button id="bookBtn">Read Book</button>
+    <button id="aboutBtn">About</button>
+    <button id="contactBtn">Contact</button>
   </div>
 </header>
 
@@ -206,21 +176,6 @@ audio{width:100%;height:40px}
   <div class="gallery-scroll">
     <section class="grid" id="gallery"></section>
   </div>
-
-  <section class="bts">
-    <h2>Behind the Scenes</h2>
-    <div class="video-grid">
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/x_eCq8PWFlg" allowfullscreen></iframe>
-      </div>
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/Mjla2uB-aRo" allowfullscreen></iframe>
-      </div>
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/Lzurm2v99FY" allowfullscreen></iframe>
-      </div>
-    </div>
-  </section>
 </main>
 </div>
 
@@ -235,17 +190,21 @@ audio{width:100%;height:40px}
       </audio>
     </div>
     <div class="modal-footer">
-      <button class="close-btn" id="closeImg">Close</button>
+      <button onclick="closeImage()">Close</button>
     </div>
   </div>
 </div>
 
-<!-- TEXT MODAL -->
-<div id="textModal" class="modal">
+<!-- PDF MODAL -->
+<div id="pdfModal" class="modal">
   <div class="modal-content">
-    <div class="text-body" id="textContent"></div>
+    <iframe
+      class="pdf-frame"
+      src="RECORD.pdf"
+      title="Songs from the Shuttered – Book">
+    </iframe>
     <div class="modal-footer">
-      <button class="close-btn" id="closeText">Close</button>
+      <button onclick="closePDF()">Close</button>
     </div>
   </div>
 </div>
@@ -264,9 +223,7 @@ const modalImg=document.getElementById("modalImg");
 const audioPlayer=document.getElementById("audioPlayer");
 const audioSource=document.getElementById("audioSource");
 const nowPlaying=document.getElementById("nowPlaying");
-
-const textModal=document.getElementById("textModal");
-const textContent=document.getElementById("textContent");
+const pdfModal=document.getElementById("pdfModal");
 
 const caption=n=>n.replace(/\.[^.]+$/,"");
 
@@ -283,30 +240,27 @@ images.forEach(n=>{
   gallery.appendChild(f);
 });
 
-document.getElementById("closeImg").onclick=()=>{
+function closeImage(){
   imageModal.classList.remove("open");
   audioPlayer.pause();
-};
+  audioPlayer.currentTime=0;
+}
 
-document.getElementById("closeText").onclick=()=>{
-  textModal.classList.remove("open");
+function closePDF(){
+  pdfModal.classList.remove("open");
+}
+
+document.getElementById("bookBtn").onclick=()=>{
+  pdfModal.classList.add("open");
 };
 
 document.getElementById("aboutBtn").onclick=()=>{
-  textContent.innerHTML="<h2>About</h2><p>Songs from the Shuttered is a staged photographic project translating songs into still images.</p>";
-  textModal.classList.add("open");
-};
-
-document.getElementById("bookBtn").onclick=()=>{
-  textContent.innerHTML="<h2>Read Book</h2><p>The book version is currently in development.</p>";
-  textModal.classList.add("open");
+  alert("Songs from the Shuttered is a staged photographic project translating songs into images.");
 };
 
 document.getElementById("contactBtn").onclick=()=>{
-  textContent.innerHTML="<h2>Contact</h2><p>Email: your@email.com</p>";
-  textModal.classList.add("open");
+  alert("Contact: your@email.com");
 };
-
 </script>
 </body>
 </html>
