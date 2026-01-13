@@ -167,7 +167,7 @@ audio{ width:100%; height: 40px; }
   <header>
     <div>
       <h1>Songs from the Shuttered</h1>
-      <p class="lead">A fine-art photographic project responding to music.</p>
+      <p class="lead">A fine-art photographic project dedicated to music </p>
     </div>
     <div style="display:flex;gap:10px">
       <button onclick="openPDF()">Read Book</button>
@@ -260,7 +260,7 @@ images.forEach(n=>{
   f.onclick=()=>{
     modalImg.src="images/"+encodeURI(n);
     audioSource.src="music/"+encodeURI(caption(n))+".mp3";
-    nowPlaying.textContent="Audio Response: " + caption(n);
+    nowPlaying.textContent="Listen to: " + caption(n);
     audioPlayer.load();
     imageModal.classList.add("open");
     document.body.style.overflow = "hidden";
