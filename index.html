@@ -38,8 +38,8 @@ header{
   margin-bottom:40px;
 }
 
-h1{margin:0;font-weight:600; font-size: 2rem;}
-p.lead{margin:6px 0 0;color:var(--muted);max-width:520px}
+h1{margin:0;font-weight:600; font-size: 2.2rem; letter-spacing: -0.5px;}
+p.lead{margin:6px 0 0;color:var(--muted);max-width:520px; font-size: 1.1rem;}
 
 button, .cta-btn, .pdf-link-btn{
   background:transparent;
@@ -55,6 +55,24 @@ button, .cta-btn, .pdf-link-btn{
   text-align: center;
 }
 
+button:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
+
+/* ---------- INTRO SECTION ---------- */
+.project-intro {
+  max-width: 850px;
+  margin: 20px 0 60px 0;
+  line-height: 1.8;
+  font-size: 1.15rem;
+  color: var(--muted);
+  border-left: 2px solid rgba(255,255,255,0.1);
+  padding-left: 24px;
+}
+
+.project-intro strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
 /* ---------- GALLERY ---------- */
 .grid{
   display:grid;
@@ -65,15 +83,17 @@ button, .cta-btn, .pdf-link-btn{
 
 figure{
   margin:0; background:rgba(255,255,255,.02); border-radius:8px;
-  overflow:hidden; cursor:pointer; transition:.3s;
+  overflow:hidden; cursor:pointer; transition:.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   display:flex; flex-direction:column; height: var(--row-height);
   border: 1px solid rgba(255,255,255,0.05);
 }
 
+figure:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
+
 .thumb{flex:1;position:relative;background:#000;}
 .thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
 
-figcaption{padding:12px; font-size:.9rem; color:var(--muted); border-top:1px solid rgba(255,255,255,.05);}
+figcaption{padding:14px; font-size:.9rem; color:var(--muted); border-top:1px solid rgba(255,255,255,.05); background: #0c0e10;}
 
 /* ---------- BOOK SECTION ---------- */
 .book-section {
@@ -86,6 +106,7 @@ figcaption{padding:12px; font-size:.9rem; color:var(--muted); border-top:1px sol
 }
 .book-hero::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.7); }
 .book-content { position: relative; z-index: 2; text-align: center; padding: 20px; }
+.book-content h2 { font-size: 2.2rem; margin-bottom: 10px; }
 
 /* ---------- BTS ---------- */
 .video-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:18px; margin-bottom: 80px;}
@@ -94,7 +115,7 @@ figcaption{padding:12px; font-size:.9rem; color:var(--muted); border-top:1px sol
 
 /* ---------- MODALS ---------- */
 .modal{
-  position:fixed; inset:0; display:none; background:rgba(0,0,0,.95);
+  position:fixed; inset:0; display:none; background:rgba(0,0,0,.96);
   align-items:center; justify-content:center; z-index:9999;
   padding:15px;
 }
@@ -102,13 +123,13 @@ figcaption{padding:12px; font-size:.9rem; color:var(--muted); border-top:1px sol
 
 .modal-content{
   background:var(--card); border-radius:12px; width:100%;
-  max-width:800px; max-height:90vh; overflow-y:auto;
+  max-width:850px; max-height:92vh; overflow-y:auto;
   display:flex; flex-direction:column; position:relative;
 }
 
-.modal-img{ width:100%; height:auto; max-height:60vh; object-fit:contain; background:#000; }
-.audio-container{ padding:20px; background:#16181a; }
-#nowPlaying { margin-bottom: 10px; font-weight: bold; display: block; }
+.modal-img{ width:100%; height:auto; max-height:65vh; object-fit:contain; background:#000; }
+.audio-container{ padding:20px; background:#16181a; border-top: 1px solid rgba(255,255,255,0.05); }
+#nowPlaying { margin-bottom: 12px; font-weight: bold; display: block; color: var(--accent); }
 audio{ width:100%; height: 40px; }
 
 .modal-footer{
@@ -117,7 +138,7 @@ audio{ width:100%; height: 40px; }
 }
 
 .close-btn {
-  background: #333; color: #fff; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; width: 100%;
+  background: #2a2d30; color: #fff; border: none; padding: 14px 24px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 500;
 }
 .pdf-link-btn {
   background: var(--accent); color: #000; font-weight: bold; border: none; width: 100%;
@@ -125,15 +146,18 @@ audio{ width:100%; height: 40px; }
 
 /* ---------- MOBILE ---------- */
 @media(max-width:640px){
-  :root{--row-height:180px}
+  :root{--row-height:190px}
+  body { padding: 30px 15px; }
+  header { flex-direction: column; align-items: flex-start; }
+  h1 { font-size: 1.8rem; }
+  .project-intro { font-size: 1.05rem; padding-left: 15px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .book-hero { height: 320px; }
-  .modal-content { max-height: 95vh; width: 100%; }
-  .pdf-frame { display: none; } /* Hide the broken iframe on small screens */
+  .pdf-frame { display: none; } 
 }
 
 @media(min-width:641px){
-    .pdf-frame { width:100%; height:70vh; border:none; display: block; }
+    .pdf-frame { width:100%; height:75vh; border:none; display: block; }
 }
 </style>
 </head>
@@ -143,7 +167,7 @@ audio{ width:100%; height: 40px; }
   <header>
     <div>
       <h1>Songs from the Shuttered</h1>
-      <p class="lead">A fine-art photographic project responding to songs.</p>
+      <p class="lead">A fine-art photographic project responding to music.</p>
     </div>
     <div style="display:flex;gap:10px">
       <button onclick="openPDF()">Read Book</button>
@@ -151,23 +175,31 @@ audio{ width:100%; height: 40px; }
     </div>
   </header>
 
+  <section class="project-intro">
+    <p>
+      <strong>Songs from the Shuttered</strong> is a fine-art photographic series co-created over the past decade with photographer <strong>Maxim Golovanov</strong>. 
+      The project consists of sixteen meticulously staged photographs, each conceived as a visual interpretation of an iconic song. 
+      The series draws deliberate parallels between contemporary music lyrics and the symbolic language of art history, referencing canonical works and figures such as Leonardo da Vinci, Bernini, Picasso, and more.
+    </p>
+  </section>
+
   <section class="grid" id="gallery"></section>
 
   <section class="book-section">
     <div class="book-hero">
       <div class="book-content">
         <h2>The Collection</h2>
-        <p>A multi-page exploration of music and imagery.</p>
+        <p>Explore the full narrative and artist statements.</p>
         <button class="cta-btn" onclick="openPDF()" style="background:var(--accent);color:#000;font-weight:bold;">Open Digital Book</button>
       </div>
     </div>
   </section>
 
   <section class="bts">
-    <h2 style="margin-bottom:20px">Behind the Scenes</h2>
+    <h2 style="margin-bottom:20px; font-weight: 500;">Behind the Scenes</h2>
     <div class="video-grid">
       <div class="video-card" onclick="window.open('https://www.facebook.com/reel/1301237869897120','_blank')" style="cursor:pointer">
-        <img src="images/Mercy Seat.jpg" alt="FB Reel">
+        <img src="images/Mercy Seat.jpg" alt="Behind the scenes reel">
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(0,0,0,.3)">▶</div>
       </div>
       <div class="video-card"><iframe src="https://www.youtube.com/embed/x_eCq8PWFlg" allowfullscreen></iframe></div>
@@ -185,7 +217,7 @@ audio{ width:100%; height: 40px; }
       <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
     </div>
     <div class="modal-footer">
-      <button class="pdf-link-btn" onclick="closeImage()">CLOSE PLAYER</button>
+      <button class="close-btn" onclick="closeImage()">CLOSE PLAYER</button>
     </div>
   </div>
 </div>
@@ -194,7 +226,7 @@ audio{ width:100%; height: 40px; }
   <div class="modal-content">
     <iframe class="pdf-frame" src="RECORD.pdf"></iframe>
     <div class="modal-footer">
-        <p style="font-size: 0.9rem; text-align: center; color: var(--muted); margin: 0;">On mobile? Use the button below to view all pages.</p>
+        <p style="font-size: 0.85rem; text-align: center; color: var(--muted); margin: 0 0 5px 0;">On mobile? Use the button below to scroll through the book.</p>
         <a href="RECORD.pdf" target="_blank" class="pdf-link-btn">OPEN FULL BOOK (PDF)</a>
         <button class="close-btn" onclick="closePDF()">CLOSE WINDOW</button>
     </div>
@@ -204,7 +236,8 @@ audio{ width:100%; height: 40px; }
 <div id="contactModal" class="modal">
   <div class="modal-content">
     <div style="padding:40px; text-align:center;">
-      <p>Email: tomer.jacobson@gmail.com</p>
+      <h3 style="margin-top:0">Contact</h3>
+      <p style="color: var(--muted)">tomer.jacobson@gmail.com</p>
       <button class="pdf-link-btn" onclick="closeContact()">CLOSE</button>
     </div>
   </div>
@@ -227,7 +260,7 @@ images.forEach(n=>{
   f.onclick=()=>{
     modalImg.src="images/"+encodeURI(n);
     audioSource.src="music/"+encodeURI(caption(n))+".mp3";
-    nowPlaying.textContent="Playing: " + caption(n);
+    nowPlaying.textContent="Audio Response: " + caption(n);
     audioPlayer.load();
     imageModal.classList.add("open");
     document.body.style.overflow = "hidden";
