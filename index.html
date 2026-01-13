@@ -24,7 +24,8 @@ body{
   color:var(--accent);
   padding:36px;
   display:flex;
-  justify-content:center;
+  flex-direction:column;
+  align-items:center;
 }
 
 .wrap{width:100%;max-width:1200px}
@@ -50,10 +51,10 @@ button{
   cursor:pointer;
 }
 
-/* ---------- ABOUT TEXT ---------- */
+/* ---------- INTRO ---------- */
 .intro{
   max-width:720px;
-  margin-bottom:50px;
+  margin-bottom:60px;
   font-size:1rem;
   line-height:1.7;
   color:var(--muted);
@@ -62,7 +63,7 @@ button{
 /* ---------- GALLERY ---------- */
 .gallery-scroll{
   overflow-x:auto;
-  margin-bottom:60px;
+  margin-bottom:80px;
 }
 
 .grid{
@@ -100,6 +101,53 @@ figcaption{
   font-size:.9rem;
   color:var(--muted);
   border-top:1px solid rgba(255,255,255,.05);
+}
+
+/* ---------- BTS ---------- */
+.bts{
+  margin-bottom:80px;
+}
+
+.bts h2{
+  margin-bottom:20px;
+  font-weight:500;
+}
+
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+}
+
+.video-card{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.video-card iframe,
+.video-card img{
+  width:100%;
+  height:100%;
+  border:0;
+  object-fit:cover;
+}
+
+.video-card.fb{
+  cursor:pointer;
+}
+
+.play-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:2rem;
+  background:rgba(0,0,0,.35);
 }
 
 /* ---------- MODALS ---------- */
@@ -160,6 +208,25 @@ audio{width:100%}
   justify-content:flex-end;
 }
 
+/* ---------- FOOTER ---------- */
+footer{
+  width:100%;
+  padding:20px;
+  text-align:center;
+  color:var(--muted);
+  border-top:1px solid rgba(255,255,255,.05);
+  font-size:0.9rem;
+}
+
+footer a{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+footer a:hover{
+  text-decoration:underline;
+}
+
 @media(max-width:640px){
   :root{--row-height:120px}
   .grid{grid-auto-columns:minmax(140px,1fr)}
@@ -181,25 +248,45 @@ audio{width:100%}
   </div>
 </header>
 
-<!-- ABOUT / INTRO TEXT -->
+<!-- INTRO TEXT -->
 <section class="intro">
   <p>
-    <em>Songs from the Shuttered</em> is a staged photographic series that translates
+    <em>Songs from the Shuttered</em> is a staged photographic series translating
     songs into still images. Each photograph responds to a specific song, treating
-    music as narrative material rather than soundtrack.
+    music as narrative rather than soundtrack.
   </p>
   <p>
     The images are constructed through mise-en-scène, live models, and controlled
-    lighting, drawing on cinematic and art-historical references. The project
-    explores how memory, emotion, and cultural meaning migrate between sound and image.
+    lighting, drawing on cinematic and art-historical references. The project explores
+    how memory and emotion migrate between sound and image.
   </p>
 </section>
 
-<main>
-  <div class="gallery-scroll">
-    <section class="grid" id="gallery"></section>
+<!-- GALLERY -->
+<div class="gallery-scroll">
+  <section class="grid" id="gallery"></section>
+</div>
+
+<!-- BTS -->
+<section class="bts">
+  <h2>Behind the Scenes</h2>
+  <div class="video-grid">
+    <div class="video-card fb"
+      onclick="window.open('https://www.facebook.com/reel/1301237869897120','_blank')">
+      <img src="images/Mercy Seat.jpg" alt="Facebook Reel">
+      <div class="play-overlay">▶</div>
+    </div>
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/x_eCq8PWFlg" allowfullscreen></iframe>
+    </div>
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/Mjla2uB-aRo" allowfullscreen></iframe>
+    </div>
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/Lzurm2v99FY" allowfullscreen></iframe>
+    </div>
   </div>
-</main>
+</section>
 
 </div>
 
@@ -222,16 +309,17 @@ audio{width:100%}
 <!-- PDF MODAL -->
 <div id="pdfModal" class="modal">
   <div class="modal-content">
-    <iframe
-      class="pdf-frame"
-      src="RECORD.pdf"
-      title="Songs from the Shuttered — Book">
-    </iframe>
+    <iframe class="pdf-frame" src="RECORD.pdf"></iframe>
     <div class="modal-footer">
       <button onclick="closePDF()">Close</button>
     </div>
   </div>
 </div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Contact: <a href="mailto:tomer.jacobson@gmail.com">tomer.jacobson@gmail.com</a></p>
+</footer>
 
 <script>
 const images=[
@@ -284,7 +372,7 @@ document.getElementById("bookBtn").onclick=()=>{
 };
 
 document.getElementById("contactBtn").onclick=()=>{
-  window.location.href="mailto:your@email.com";
+  window.location.href="mailto:tomer.jacobson@gmail.com";
 };
 </script>
 
