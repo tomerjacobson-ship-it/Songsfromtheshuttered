@@ -117,7 +117,7 @@ figcaption{
   border-top:1px solid rgba(255,255,255,.05);
 }
 
-/* ---------- BOOK SECTION (NEW) ---------- */
+/* ---------- BOOK SECTION ---------- */
 .book-section {
   width: 100%;
   margin-bottom: 80px;
@@ -142,7 +142,7 @@ figcaption{
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
+  background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 100%);
 }
 
 .book-content {
@@ -152,20 +152,13 @@ figcaption{
   padding: 40px;
 }
 
-.book-content h2 {
-  font-size: 2.5rem;
-  margin: 0 0 10px 0;
-}
-
-.book-content p {
-  color: var(--muted);
-  margin-bottom: 25px;
-  font-size: 1.1rem;
-}
+.book-content h2 { font-size: 2.5rem; margin: 0 0 10px 0; }
+.book-content p { color: var(--muted); margin-bottom: 25px; font-size: 1.1rem; }
 
 /* ---------- BTS ---------- */
 .bts{
   margin-bottom: 80px;
+  width: 100%;
 }
 
 .bts h2{
@@ -175,7 +168,7 @@ figcaption{
 
 .video-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap:18px;
 }
 
@@ -185,7 +178,7 @@ figcaption{
   background:#000;
   border-radius:10px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.06);
 }
 
 .video-card iframe, .video-card img{
@@ -213,31 +206,26 @@ figcaption{
 }
 
 .modal-img{ width:100%; flex: 1; object-fit:contain; background:#000; }
-
 .audio-container{ padding:20px; background:#16181a; display:flex; flex-direction:column; gap:10px; }
-
 audio{width:100%}
-
 .pdf-frame{ width:100%; height:80vh; border:none; background:#000; }
-
 .modal-footer{ padding:15px; border-top:1px solid rgba(255,255,255,.05); display:flex; justify-content:flex-end; gap:10px; }
+
+/* ---------- CONTACT ---------- */
+.contact-container{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:40px 20px; }
+.contact-container input{ width:100%; max-width:300px; text-align:center; padding:12px; border-radius:6px; border:none; background: #eee; color:#000; }
 
 /* ---------- FOOTER ---------- */
 footer{ width:100%; padding:40px 20px; text-align:center; color:var(--muted); border-top:1px solid rgba(255,255,255,.05); font-size:0.9rem; }
 footer a{ color:var(--accent); text-decoration:none; }
 
-/* ---------- CONTACT MODAL ---------- */
-.contact-container{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:40px 20px; }
-.contact-container input{ width:100%; max-width:300px; text-align:center; padding:12px; border-radius:6px; border:none; background: #eee; color:#000; }
-.contact-container button{ background:var(--accent); color:#000; font-weight:bold; border: none; }
-
 /* ---------- MOBILE ---------- */
 @media(max-width:640px){
-  :root{--row-height:220px}
+  :root{--row-height:200px}
   body { padding: 30px 15px; }
   header { flex-direction: column; }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .book-hero { height: 300px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .book-hero { height: 320px; }
   .book-content h2 { font-size: 1.8rem; }
 }
 </style>
@@ -268,8 +256,8 @@ footer a{ color:var(--accent); text-decoration:none; }
 <section class="book-section">
   <div class="book-hero">
     <div class="book-content">
-      <h2>SFTS - The book </h2>
-      <p>Explore the full narrative in our  digital edition.</p>
+      <h2>The Collection</h2>
+      <p>Explore the full narrative and artist statements in the high-definition book.</p>
       <button class="cta-btn" id="bookBtnMain" style="background: var(--accent); color: #000; font-weight: bold;">Open the Book</button>
     </div>
   </div>
@@ -287,6 +275,9 @@ footer a{ color:var(--accent); text-decoration:none; }
     </div>
     <div class="video-card">
       <iframe src="https://www.youtube.com/embed/Mjla2uB-aRo" allowfullscreen></iframe>
+    </div>
+    <div class="video-card">
+      <iframe src="https://www.youtube.com/embed/Lzurm2v99FY" allowfullscreen></iframe>
     </div>
   </div>
 </section>
@@ -316,7 +307,7 @@ footer a{ color:var(--accent); text-decoration:none; }
     <div class="contact-container">
       <p>My email:</p>
       <input type="text" id="contactEmail" value="tomer.jacobson@gmail.com" readonly>
-      <button onclick="copyEmail()">Copy</button>
+      <button onclick="copyEmail()" style="margin-top:10px; background:var(--accent); color:#000; font-weight:bold; border:none;">Copy</button>
       <p id="copyMsg" style="color:var(--muted);font-size:0.9rem; margin-top:10px;"></p>
     </div>
     <div class="modal-footer"><button onclick="closeContact()">Close</button></div>
