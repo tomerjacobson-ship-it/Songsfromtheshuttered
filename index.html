@@ -1,309 +1,37 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Songs from the Shuttered — Gallery</title>
+const textModal = document.getElementById("textModal");
+const textModalTitle = document.getElementById("textModalTitle");
+const textModalBody = document.getElementById("textModalBody");
 
-<style>
-:root{
-  --bg:#0f1113;
-  --card:#0b0c0d;
-  --muted:#9aa0a6;
-  --accent:#e6e6e6;
-  --gap:18px;
-  --rows:4;
-  --row-height:190px;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
-html,body{height:100%}
-body{
-  margin:0;
-  background:linear-gradient(180deg,#070708 0%, #0f1113 100%);
-  color:var(--accent);
-  padding:36px;
-  display:flex;
-  justify-content:center;
-}
-
-.wrap{width:100%;max-width:1200px}
-
-header{
-  margin-bottom:24px;
-  display:flex;
-  justify-content:space-between;
-  gap:18px;
-  flex-wrap:wrap;
-}
-
-h1{margin:0;font-weight:600}
-h2{margin:0 0 10px;font-weight:500}
-p.lead{margin:0;color:var(--muted);font-size:.95rem}
-
-.close-btn{
-  background:transparent;
-  border:1px solid rgba(255,255,255,.08);
-  color:var(--accent);
-  padding:8px 14px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* -------- GALLERY -------- */
-.gallery-scroll{
-  overflow-x:auto;
-  padding-bottom:12px;
-  margin-bottom:60px;
-}
-
-.grid{
-  display:grid;
-  grid-auto-flow:column;
-  grid-auto-columns:minmax(220px,1fr);
-  grid-template-rows:repeat(var(--rows), var(--row-height));
-  gap:var(--gap);
-}
-
-figure{
-  margin:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
-  border-radius:8px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.2s;
-  display:flex;
-  flex-direction:column;
-}
-
-figure:hover{ transform:translateY(-6px); }
-
-.thumb{flex:1;position:relative;background:#000}
-.thumb img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-figcaption{
-  padding:10px 12px;
-  font-size:.9rem;
-  color:var(--muted);
-  border-top:1px solid rgba(255,255,255,.03);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* -------- BTS SECTION -------- */
-.bts{margin-bottom:60px}
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-}
-
-.video-card {
-  position: relative;
-  aspect-ratio: 16/9;
-  background: #000;
-  border-radius: 10px;
-  overflow: hidden;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.2s;
-}
-
-.video-card:hover { transform: translateY(-4px); }
-.video-card iframe, .video-card img {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  object-fit: cover;
-}
-
-.play-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.3);
-  color: white;
-  font-size: 2rem;
-  pointer-events: none;
-}
-
-/* -------- MODAL & PLAYER -------- */
-.modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  background:rgba(0,0,0,.9);
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-  padding:20px;
-}
-
-.modal.open{display:flex}
-
-.modal-content{
-  background:var(--card);
-  border-radius:12px;
-  max-width:1000px;
-  width: 95%;
-  max-height:95vh;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-
-.modal-img{
-  width:100%;
-  height:auto;
-  max-height: 65vh;
-  object-fit:contain;
-  background:#000;
-}
-
-.audio-container {
-  padding: 20px;
-  background: #16181a;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-
-audio {
-  width: 100%;
-  height: 40px;
-  filter: invert(100%) hue-rotate(180deg) brightness(1.5); /* Makes player look better on dark theme */
-}
-
-.modal-footer{
-  padding:15px 20px;
-  color:var(--muted);
-  display:flex;
-  justify-content:space-between;
-  align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-@media(max-width:640px){
-  :root{--row-height:120px}
-  .grid{grid-auto-columns:minmax(140px,1fr)}
-}
-</style>
-</head>
-
-<body>
-<div class="wrap">
-
-<header>
-  <div>
-    <h1>Songs from the Shuttered</h1>
-    <p class="lead">Fine art project dedicated to songs.</p>
-  </div>
-  <div style="display:flex;gap:10px">
-    <button id="bookBtn" class="close-btn">Read Book</button>
-    <button id="aboutBtn" class="close-btn">About</button>
-    <button id="contactBtn" class="close-btn">Contact</button>
-  </div>
-</header>
-
-<main>
-<div class="gallery-scroll">
-  <section class="grid" id="gallery"></section>
-</div>
-
-<section class="bts">
-  <h2>Behind the Scenes</h2>
-  <div class="video-grid">
-    <div class="video-card" onclick="window.open('https://www.facebook.com/reel/1301237869897120', '_blank')">
-      <img src="images/Mercy Seat.jpg" alt="FB Reel Thumbnail">
-      <div class="play-overlay">▶</div>
-    </div>
-    <div class="video-card"><iframe src="https://www.youtube.com/embed/x_eCq8PWFlg" allowfullscreen></iframe></div>
-    <div class="video-card"><iframe src="https://www.youtube.com/embed/Mjla2uB-aRo" allowfullscreen></iframe></div>
-    <div class="video-card"><iframe src="https://www.youtube.com/embed/Lzurm2v99FY" allowfullscreen></iframe></div>
-  </div>
-</section>
-</main>
-</div>
-
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <img id="modalImg" class="modal-img">
-    
-    <div class="audio-container">
-      <div id="nowPlaying" style="font-size: 0.8rem; color: var(--muted); margin-bottom: 5px;"></div>
-      <audio id="audioPlayer" controls>
-        <source id="audioSource" src="" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-    </div>
-
-    <div class="modal-footer">
-      <div id="modalCaption" style="font-weight: 600; color: #fff;"></div>
-      <button class="close-btn" id="closeImg">Close</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const images=[
-  "Her lies.jpg","The Power of love.jpg","Hallowed be thy name.jpg","society.jpg",
-  "Fake Empire.jpg","Where to now St. Peter.jpg","After the gold rush.jpg","Mercy Seat.jpg",
-  "I am waiting for my man.jpg","Weak.jpg","Cortez the killer.jpg","Flume.jpg",
-  "Hey Joe.jpg","The good son.jpg","One more cup of coffee.jpg","Lost in the flood.jpg"
-];
-
-const gallery=document.getElementById("gallery");
-const modal=document.getElementById("modal");
-const modalImg=document.getElementById("modalImg");
-const modalCaption=document.getElementById("modalCaption");
-const audioPlayer = document.getElementById("audioPlayer");
-const audioSource = document.getElementById("audioSource");
-const nowPlaying = document.getElementById("nowPlaying");
-
-function caption(n){return n.replace(/\.[^.]+$/,"")}
-
-images.forEach(n=>{
-  const f=document.createElement("figure");
-  f.innerHTML=`<div class="thumb"><img src="images/${encodeURI(n)}"></div><figcaption>${caption(n)}</figcaption>`;
-  
-  f.onclick=()=>{
-    const songName = caption(n);
-    modalImg.src="images/"+encodeURI(n);
-    modalCaption.textContent=songName;
-    
-    // Set Audio Source: Assumes mp3s are in a folder called 'music'
-    // and named exactly like the song (e.g., Fake Empire.mp3)
-    audioSource.src = "music/" + encodeURI(songName) + ".mp3";
-    nowPlaying.textContent = "Song: " + songName;
-    
-    audioPlayer.load(); // Reloads the player with the new source
-    modal.classList.add("open");
-  };
-  gallery.appendChild(f);
-});
-
-// Close function (Stops the music too)
-const closeModal = () => {
-  modal.classList.remove("open");
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
+const openTextModal = (title, html) => {
+  textModalTitle.textContent = title;
+  textModalBody.innerHTML = html;
+  textModal.classList.add("open");
 };
 
-document.getElementById("closeImg").onclick = closeModal;
-modal.onclick = e => e.target === modal && closeModal();
+document.getElementById("closeTextModal").onclick = () => {
+  textModal.classList.remove("open");
+};
 
-// Other modal listeners (Book, About, Contact) remain the same...
-</script>
-</body>
-</html>
+textModal.onclick = e => e.target === textModal && textModal.classList.remove("open");
+
+// BUTTON ACTIONS
+document.getElementById("aboutBtn").onclick = () =>
+  openTextModal(
+    "About",
+    `<p>“Songs from the Shuttered” is a conceptual photographic series translating songs into staged images.</p>
+     <p>Each image responds to the emotional and narrative structure of a specific song.</p>`
+  );
+
+document.getElementById("bookBtn").onclick = () =>
+  openTextModal(
+    "Read Book",
+    `<p>The full book is currently in development.</p>
+     <p>For inquiries regarding publication or access, please get in touch.</p>`
+  );
+
+document.getElementById("contactBtn").onclick = () =>
+  openTextModal(
+    "Contact",
+    `<p>Email: <a href="mailto:tomer.jacobson@gmail.com">tomer.jacobson@gmail.com</a></p>
+     <p>Instagram: @yourhandle</p>`
+  );
