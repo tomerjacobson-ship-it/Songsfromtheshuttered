@@ -29,16 +29,17 @@ body{
 
 .wrap{width:100%;max-width:1200px}
 
+/* ---------- HEADER ---------- */
 header{
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
   gap:18px;
-  margin-bottom:30px;
+  margin-bottom:40px;
 }
 
 h1{margin:0;font-weight:600}
-p.lead{margin:4px 0 0;color:var(--muted)}
+p.lead{margin:6px 0 0;color:var(--muted);max-width:520px}
 
 button{
   background:transparent;
@@ -49,7 +50,16 @@ button{
   cursor:pointer;
 }
 
-/* -------- GALLERY -------- */
+/* ---------- ABOUT TEXT ---------- */
+.intro{
+  max-width:720px;
+  margin-bottom:50px;
+  font-size:1rem;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+/* ---------- GALLERY ---------- */
 .gallery-scroll{
   overflow-x:auto;
   margin-bottom:60px;
@@ -92,7 +102,7 @@ figcaption{
   border-top:1px solid rgba(255,255,255,.05);
 }
 
-/* -------- MODALS -------- */
+/* ---------- MODALS ---------- */
 .modal{
   position:fixed;
   inset:0;
@@ -117,7 +127,7 @@ figcaption{
   flex-direction:column;
 }
 
-/* IMAGE MODAL */
+/* Image + Audio */
 .modal-img{
   width:100%;
   max-height:65vh;
@@ -135,7 +145,7 @@ figcaption{
 
 audio{width:100%}
 
-/* PDF MODAL */
+/* PDF */
 .pdf-frame{
   width:100%;
   height:80vh;
@@ -163,20 +173,34 @@ audio{width:100%}
 <header>
   <div>
     <h1>Songs from the Shuttered</h1>
-    <p class="lead">Fine art project dedicated to songs</p>
+    <p class="lead">A fine-art photographic project responding to songs.</p>
   </div>
   <div style="display:flex;gap:10px">
     <button id="bookBtn">Read Book</button>
-    <button id="aboutBtn">About</button>
     <button id="contactBtn">Contact</button>
   </div>
 </header>
+
+<!-- ABOUT / INTRO TEXT -->
+<section class="intro">
+  <p>
+    <em>Songs from the Shuttered</em> is a staged photographic series that translates
+    songs into still images. Each photograph responds to a specific song, treating
+    music as narrative material rather than soundtrack.
+  </p>
+  <p>
+    The images are constructed through mise-en-scène, live models, and controlled
+    lighting, drawing on cinematic and art-historical references. The project
+    explores how memory, emotion, and cultural meaning migrate between sound and image.
+  </p>
+</section>
 
 <main>
   <div class="gallery-scroll">
     <section class="grid" id="gallery"></section>
   </div>
 </main>
+
 </div>
 
 <!-- IMAGE + AUDIO MODAL -->
@@ -201,7 +225,7 @@ audio{width:100%}
     <iframe
       class="pdf-frame"
       src="RECORD.pdf"
-      title="Songs from the Shuttered – Book">
+      title="Songs from the Shuttered — Book">
     </iframe>
     <div class="modal-footer">
       <button onclick="closePDF()">Close</button>
@@ -229,7 +253,12 @@ const caption=n=>n.replace(/\.[^.]+$/,"");
 
 images.forEach(n=>{
   const f=document.createElement("figure");
-  f.innerHTML=`<div class="thumb"><img src="images/${encodeURI(n)}"></div><figcaption>${caption(n)}</figcaption>`;
+  f.innerHTML=`
+    <div class="thumb">
+      <img src="images/${encodeURI(n)}" alt="${caption(n)}">
+    </div>
+    <figcaption>${caption(n)}</figcaption>
+  `;
   f.onclick=()=>{
     modalImg.src="images/"+encodeURI(n);
     audioSource.src="music/"+encodeURI(caption(n))+".mp3";
@@ -254,13 +283,10 @@ document.getElementById("bookBtn").onclick=()=>{
   pdfModal.classList.add("open");
 };
 
-document.getElementById("aboutBtn").onclick=()=>{
-  alert("Songs from the Shuttered is a fine-art photographic series co-created over the past decade with photographer Maxim Golovanov. The project consists of sixteen meticulously staged photographs, each conceived as a visual interpretation of an iconic song. The series draws deliberate parallels between contemporary music lyrics and the symbolic language of art history. ");
-};
-
 document.getElementById("contactBtn").onclick=()=>{
-  alert("Contact: tomer.jacobson@gmail.com");
+  window.location.href="mailto:your@email.com";
 };
 </script>
+
 </body>
 </html>
