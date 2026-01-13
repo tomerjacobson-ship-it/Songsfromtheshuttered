@@ -42,18 +42,22 @@ header{
 h1{margin:0;font-weight:600; font-size: 2rem;}
 p.lead{margin:6px 0 0;color:var(--muted);max-width:520px}
 
-button{
+button, .cta-btn{
   background:transparent;
   border:1px solid rgba(255,255,255,.2);
   color:var(--accent);
   padding:10px 18px;
   border-radius:6px;
   cursor:pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
 }
 
-button:hover{
-  background: rgba(255,255,255,0.05);
+button:hover, .cta-btn:hover{
+  background: rgba(255,255,255,0.1);
+  border-color: var(--accent);
 }
 
 /* ---------- INTRO ---------- */
@@ -66,7 +70,6 @@ button:hover{
 }
 
 /* ---------- GALLERY ---------- */
-/* Removed overflow-x: auto to fix horizontal scrolling issue */
 .gallery-container {
   width: 100%;
   margin-bottom: 80px;
@@ -74,7 +77,6 @@ button:hover{
 
 .grid{
   display:grid;
-  /* This creates a responsive grid that wraps to new lines */
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap:var(--gap);
 }
@@ -115,9 +117,55 @@ figcaption{
   border-top:1px solid rgba(255,255,255,.05);
 }
 
+/* ---------- BOOK SECTION (NEW) ---------- */
+.book-section {
+  width: 100%;
+  margin-bottom: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.book-hero {
+  width: 100%;
+  height: 400px;
+  background: url('images/Lost in the flood.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.book-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.book-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px;
+}
+
+.book-content h2 {
+  font-size: 2.5rem;
+  margin: 0 0 10px 0;
+}
+
+.book-content p {
+  color: var(--muted);
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+}
+
 /* ---------- BTS ---------- */
 .bts{
-  margin-bottom:80px;
+  margin-bottom: 80px;
 }
 
 .bts h2{
@@ -140,155 +188,57 @@ figcaption{
   border:1px solid rgba(255,255,255,.06);
 }
 
-.video-card iframe,
-.video-card img{
-  width:100%;
-  height:100%;
-  border:0;
-  object-fit:cover;
-}
-
-.video-card.fb{
-  cursor:pointer;
+.video-card iframe, .video-card img{
+  width:100%; height:100%; border:0; object-fit:cover;
 }
 
 .play-overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:2rem;
-  background:rgba(0,0,0,.35);
+  position:absolute; inset:0; display:flex; align-items:center;
+  justify-content:center; font-size:2rem; background:rgba(0,0,0,.35);
 }
 
 /* ---------- MODALS ---------- */
 .modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  background:rgba(0,0,0,.92);
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-  padding:20px;
-  backdrop-filter: blur(5px);
+  position:fixed; inset:0; display:none; background:rgba(0,0,0,.92);
+  align-items:center; justify-content:center; z-index:1000;
+  padding:20px; backdrop-filter: blur(5px);
 }
 
 .modal.open{display:flex}
 
 .modal-content{
-  background:var(--card);
-  border-radius:12px;
-  width:100%;
-  max-width:1000px;
-  max-height:90vh;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  background:var(--card); border-radius:12px; width:100%;
+  max-width:1000px; max-height:90vh; overflow:hidden;
+  display:flex; flex-direction:column; position:relative;
 }
 
-.modal-img{
-  width:100%;
-  flex: 1;
-  object-fit:contain;
-  background:#000;
-}
+.modal-img{ width:100%; flex: 1; object-fit:contain; background:#000; }
 
-.audio-container{
-  padding:20px;
-  background:#16181a;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-#nowPlaying {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
+.audio-container{ padding:20px; background:#16181a; display:flex; flex-direction:column; gap:10px; }
 
 audio{width:100%}
 
-.pdf-frame{
-  width:100%;
-  height:80vh;
-  border:none;
-  background:#000;
-}
+.pdf-frame{ width:100%; height:80vh; border:none; background:#000; }
 
-.modal-footer{
-  padding:15px;
-  border-top:1px solid rgba(255,255,255,.05);
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-}
+.modal-footer{ padding:15px; border-top:1px solid rgba(255,255,255,.05); display:flex; justify-content:flex-end; gap:10px; }
 
 /* ---------- FOOTER ---------- */
-footer{
-  width:100%;
-  padding:40px 20px;
-  text-align:center;
-  color:var(--muted);
-  border-top:1px solid rgba(255,255,255,.05);
-  font-size:0.9rem;
-}
-
-footer a{
-  color:var(--accent);
-  text-decoration:none;
-}
+footer{ width:100%; padding:40px 20px; text-align:center; color:var(--muted); border-top:1px solid rgba(255,255,255,.05); font-size:0.9rem; }
+footer a{ color:var(--accent); text-decoration:none; }
 
 /* ---------- CONTACT MODAL ---------- */
-.contact-container{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-  padding:40px 20px;
-  font-size:1rem;
-  color:var(--accent);
-}
+.contact-container{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:40px 20px; }
+.contact-container input{ width:100%; max-width:300px; text-align:center; padding:12px; border-radius:6px; border:none; background: #eee; color:#000; }
+.contact-container button{ background:var(--accent); color:#000; font-weight:bold; border: none; }
 
-.contact-container input{
-  width:100%;
-  max-width:300px;
-  text-align:center;
-  padding:12px;
-  border-radius:6px;
-  border:none;
-  background: #eee;
-  font-size:1rem;
-  color:#000;
-}
-
-.contact-container button{
-  width:120px;
-  background:var(--accent);
-  color:#000;
-  font-weight:bold;
-  border: none;
-}
-
-/* ---------- MOBILE ADJUSTMENTS ---------- */
+/* ---------- MOBILE ---------- */
 @media(max-width:640px){
   :root{--row-height:220px}
-  
   body { padding: 30px 15px; }
-  
-  header { flex-direction: column; gap: 15px; }
-  
-  h1 { font-size: 1.6rem; }
-  
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-  }
-  
-  .modal-content { width: 100%; height: auto; }
+  header { flex-direction: column; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .book-hero { height: 300px; }
+  .book-content h2 { font-size: 1.8rem; }
 }
 </style>
 </head>
@@ -302,28 +252,33 @@ footer a{
     <p class="lead">A fine-art photographic project responding to songs.</p>
   </div>
   <div style="display:flex;gap:10px">
-    <button id="bookBtn">Read Book</button>
+    <button id="bookBtnHeader">Read Book</button>
     <button id="contactBtn">Contact</button>
   </div>
 </header>
 
 <section class="intro">
-  <p>
-    <em>Songs from the Shuttered</em> is a staged photographic series translating
-    music into still images. Each photograph responds to a specific song, treating
-    the lyrics as a narrative script.
-  </p>
+  <p><em>Songs from the Shuttered</em> is a staged photographic series translating music into still images.</p>
 </section>
 
 <div class="gallery-container">
   <section class="grid" id="gallery"></section>
 </div>
 
+<section class="book-section">
+  <div class="book-hero">
+    <div class="book-content">
+      <h2>The Collection</h2>
+      <p>Explore the full narrative in our high-definition digital edition.</p>
+      <button class="cta-btn" id="bookBtnMain" style="background: var(--accent); color: #000; font-weight: bold;">Open the Book</button>
+    </div>
+  </div>
+</section>
+
 <section class="bts">
   <h2>Behind the Scenes</h2>
   <div class="video-grid">
-    <div class="video-card fb"
-      onclick="window.open('https://www.facebook.com/reel/1301237869897120','_blank')">
+    <div class="video-card fb" onclick="window.open('https://www.facebook.com/reel/1301237869897120','_blank')">
       <img src="images/Mercy Seat.jpg" alt="Facebook Reel">
       <div class="play-overlay">▶</div>
     </div>
@@ -332,9 +287,6 @@ footer a{
     </div>
     <div class="video-card">
       <iframe src="https://www.youtube.com/embed/Mjla2uB-aRo" allowfullscreen></iframe>
-    </div>
-    <div class="video-card">
-      <iframe src="https://www.youtube.com/embed/Lzurm2v99FY" allowfullscreen></iframe>
     </div>
   </div>
 </section>
@@ -345,23 +297,17 @@ footer a{
   <div class="modal-content">
     <img id="modalImg" class="modal-img">
     <div class="audio-container">
-      <div id="nowPlaying"></div>
-      <audio id="audioPlayer" controls>
-        <source id="audioSource" src="" type="audio/mpeg">
-      </audio>
+      <div id="nowPlaying" style="font-weight:bold"></div>
+      <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
     </div>
-    <div class="modal-footer">
-      <button onclick="closeImage()">Close</button>
-    </div>
+    <div class="modal-footer"><button onclick="closeImage()">Close</button></div>
   </div>
 </div>
 
 <div id="pdfModal" class="modal">
   <div class="modal-content">
     <iframe class="pdf-frame" src="RECORD.pdf"></iframe>
-    <div class="modal-footer">
-      <button onclick="closePDF()">Close</button>
-    </div>
+    <div class="modal-footer"><button onclick="closePDF()">Close</button></div>
   </div>
 </div>
 
@@ -373,24 +319,14 @@ footer a{
       <button onclick="copyEmail()">Copy</button>
       <p id="copyMsg" style="color:var(--muted);font-size:0.9rem; margin-top:10px;"></p>
     </div>
-    <div class="modal-footer">
-      <button onclick="closeContact()">Close</button>
-    </div>
+    <div class="modal-footer"><button onclick="closeContact()">Close</button></div>
   </div>
 </div>
 
-<footer>
-  <p>Contact: <a href="mailto:tomer.jacobson@gmail.com">tomer.jacobson@gmail.com</a></p>
-</footer>
+<footer><p>Contact: <a href="mailto:tomer.jacobson@gmail.com">tomer.jacobson@gmail.com</a></p></footer>
 
 <script>
-const images=[
-  "Her lies.jpg","The Power of love.jpg","Hallowed.jpg","society.jpg",
-  "Fake Empire.jpg","Peter.jpg","After the gold rush.jpg","Mercy Seat.jpg",
-  "I am waiting for my man.jpg","Weak.jpg","Cortez the killer.jpg","Flume.jpg",
-  "Hey Joe.jpg","The good son.jpg","One more cup of coffee.jpg","Lost in the flood.jpg"
-];
-
+const images=["Her lies.jpg","The Power of love.jpg","Hallowed.jpg","society.jpg","Fake Empire.jpg","Peter.jpg","After the gold rush.jpg","Mercy Seat.jpg","I am waiting for my man.jpg","Weak.jpg","Cortez the killer.jpg","Flume.jpg","Hey Joe.jpg","The good son.jpg","One more cup of coffee.jpg","Lost in the flood.jpg"];
 const gallery=document.getElementById("gallery");
 const imageModal=document.getElementById("imageModal");
 const modalImg=document.getElementById("modalImg");
@@ -399,71 +335,33 @@ const audioSource=document.getElementById("audioSource");
 const nowPlaying=document.getElementById("nowPlaying");
 const pdfModal=document.getElementById("pdfModal");
 const contactModal=document.getElementById("contactModal");
-
 const caption=n=>n.replace(/\.[^.]+$/,"");
 
 images.forEach(n=>{
   const f=document.createElement("figure");
-  f.innerHTML=`
-    <div class="thumb">
-      <img src="images/${encodeURI(n)}" alt="${caption(n)}" loading="lazy">
-    </div>
-    <figcaption>${caption(n)}</figcaption>
-  `;
+  f.innerHTML=`<div class="thumb"><img src="images/${encodeURI(n)}" alt="${caption(n)}" loading="lazy"></div><figcaption>${caption(n)}</figcaption>`;
   f.onclick=()=>{
     modalImg.src="images/"+encodeURI(n);
     audioSource.src="music/"+encodeURI(caption(n))+".mp3";
     nowPlaying.textContent=caption(n);
     audioPlayer.load();
     imageModal.classList.add("open");
-    document.body.style.overflow = "hidden"; // Prevent background scroll
+    document.body.style.overflow = "hidden";
   };
   gallery.appendChild(f);
 });
 
-function closeImage(){
-  imageModal.classList.remove("open");
-  audioPlayer.pause();
-  audioPlayer.currentTime=0;
-  document.body.style.overflow = "auto";
-}
+function closeImage(){ imageModal.classList.remove("open"); audioPlayer.pause(); document.body.style.overflow = "auto"; }
+function closePDF(){ pdfModal.classList.remove("open"); document.body.style.overflow = "auto"; }
+function closeContact(){ contactModal.classList.remove("open"); document.body.style.overflow = "auto"; }
+function copyEmail(){ navigator.clipboard.writeText("tomer.jacobson@gmail.com"); document.getElementById("copyMsg").textContent = "Copied!"; }
 
-function closePDF(){ 
-  pdfModal.classList.remove("open"); 
-  document.body.style.overflow = "auto";
-}
+const openPDF = () => { pdfModal.classList.add("open"); document.body.style.overflow = "hidden"; };
+document.getElementById("bookBtnHeader").onclick = openPDF;
+document.getElementById("bookBtnMain").onclick = openPDF;
+document.getElementById("contactBtn").onclick=()=>{ contactModal.classList.add("open"); document.body.style.overflow = "hidden"; };
 
-function closeContact(){ 
-  contactModal.classList.remove("open"); 
-  document.body.style.overflow = "auto";
-}
-
-function copyEmail(){
-  const input = document.getElementById("contactEmail");
-  input.select();
-  input.setSelectionRange(0,99999);
-  navigator.clipboard.writeText(input.value);
-  document.getElementById("copyMsg").textContent = "Copied to clipboard!";
-}
-
-document.getElementById("bookBtn").onclick=()=>{ 
-  pdfModal.classList.add("open"); 
-  document.body.style.overflow = "hidden";
-};
-document.getElementById("contactBtn").onclick=()=>{ 
-  contactModal.classList.add("open"); 
-  document.body.style.overflow = "hidden";
-};
-
-// Close modal on background click
-window.onclick = (event) => {
-  if (event.target.classList.contains('modal')) {
-    closeImage();
-    closePDF();
-    closeContact();
-  }
-};
+window.onclick = (e) => { if (e.target.classList.contains('modal')) { closeImage(); closePDF(); closeContact(); } };
 </script>
-
 </body>
 </html>
