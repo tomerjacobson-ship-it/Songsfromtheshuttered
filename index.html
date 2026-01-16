@@ -32,12 +32,13 @@ p.lead{margin:8px 0 0;color:var(--muted);max-width:520px; font-size: 1.1rem;}
 }
 .project-intro strong { color: var(--accent); font-weight: 500; }
 
-button, .cta-btn { 
+button, .cta-btn, .pdf-btn { 
   background:transparent; border:1px solid rgba(255,255,255,.2); 
   color:var(--accent); padding:12px 24px; border-radius:6px; 
   cursor:pointer; transition: 0.2s; text-decoration: none; display: inline-block;
+  font-size: 1rem; text-align: center;
 }
-button:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
+button:hover, .pdf-btn:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
 
 /* ---------- GALLERY GRID ---------- */
 .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap:var(--gap); margin-bottom: 80px; }
@@ -72,8 +73,8 @@ figcaption{padding:18px; font-size:1rem; color:var(--muted); border-top:1px soli
 }
 .video-card iframe, .video-card img{ width:100%; height:100%; border:0; object-fit:cover; }
 
-/* ---------- FULLSCREEN MODAL ---------- */
-.modal{ position:fixed; inset:0; display:none; background:#000; z-index:9999; align-items:center; justify-content:center; }
+/* ---------- MODALS ---------- */
+.modal{ position:fixed; inset:0; display:none; background:rgba(0,0,0,0.95); z-index:9999; align-items:center; justify-content:center; }
 .modal.open{display:flex}
 
 .modal-img {
@@ -88,7 +89,7 @@ figcaption{padding:18px; font-size:1rem; color:var(--muted); border-top:1px soli
   z-index: 10002; transition: opacity 0.6s ease;
   opacity: 0.35; 
 }
-.audio-wrap.is-playing { opacity: 0.10; }
+.audio-wrap.is-playing { opacity: 0.15; }
 .audio-wrap:hover { opacity: 0.9 !important; }
 
 audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
@@ -108,6 +109,12 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
 .prev-btn { left: 0; text-align: left; padding-left: 30px; }
 .next-btn { right: 0; text-align: right; padding-right: 30px; }
 
+/* PDF & CONTACT MODAL STYLING */
+.standard-modal-content {
+    background:#0c0e10; padding:30px; border-radius:12px; width:90%; max-width:900px;
+    display: flex; flex-direction: column; gap: 20px; position: relative;
+}
+
 /* ---------- MOBILE ---------- */
 @media(max-width:640px){
   h1 { font-size: 2rem; }
@@ -116,6 +123,7 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
   .audio-wrap { bottom: 20px; opacity: 0.5; width: 100%; text-align: center; }
   audio { width: 80%; }
   .nav-btn { display: none; }
+  .standard-modal-content iframe { display: none; } /* Hide PDF frame on mobile */
 }
 </style>
 </head>
@@ -129,7 +137,7 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
     </div>
     <div style="display:flex;gap:10px">
       <button onclick="openPDF()">Read Book</button>
-      <button id="contactBtn">Contact</button>
+      <button onclick="openContact()">Contact</button>
     </div>
   </header>
 
@@ -147,7 +155,7 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
       <div class="book-content">
         <h2>SFTS-The Book</h2>
         <p>Explore the full narrative stories and classic references.</p>
-        <button class="cta-btn" onclick="openPDF()" style="background:var(--accent);color:#000;font-weight:bold;">Open Digital Book</button>
+        <button class="cta-btn" onclick="openPDF()" style="background:var(--accent);color:#000;font-weight:bold;border:none;">Open Digital Book</button>
       </div>
     </div>
   </section>
@@ -169,22 +177,31 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
 <div id="imageModal" class="modal">
   <button class="close-x" onclick="closeImage()">&times;</button>
   <button class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</button>
-  
   <div style="width:100vw; height:100vh; display:flex; align-items:center; justify-content:center;" onclick="closeOnBg(event)">
     <img id="modalImg" class="modal-img" onclick="toggleZoom(event)">
   </div>
-
   <div class="audio-wrap" id="audioContainer">
     <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
   </div>
-
   <button class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</button>
 </div>
 
 <div id="pdfModal" class="modal">
-    <div style="background:#0c0e10; padding:20px; border-radius:12px; width:90%; max-width:900px;">
-        <iframe src="RECORD.pdf" style="width:100%; height:75vh; border:none;"></iframe>
-        <button onclick="closePDF()" style="width:100%; margin-top:15px; background:white; color:black; cursor:pointer; padding:10px; border:none; border-radius:5px;">Close Book</button>
+    <div class="standard-modal-content">
+        <h3 style="margin:0">SFTS Digital Book</h3>
+        <iframe src="RECORD.pdf" style="width:100%; height:60vh; border:none; border-radius: 4px; background: #000;"></iframe>
+        <div style="display:flex; flex-direction: column; gap:10px;">
+            <a href="RECORD.pdf" target="_blank" class="pdf-btn" style="background:var(--accent); color:#000; font-weight:bold; border:none;">OPEN FULL PDF IN NEW TAB</a>
+            <button onclick="closePDF()">Close Preview</button>
+        </div>
+    </div>
+</div>
+
+<div id="contactModal" class="modal">
+    <div class="standard-modal-content" style="max-width:400px; text-align:center;">
+        <h3 style="margin:0">Contact</h3>
+        <p style="color:var(--muted); margin: 10px 0 20px;">tomer.jacobson@gmail.com</p>
+        <button onclick="closeContact()">Close</button>
     </div>
 </div>
 
@@ -218,7 +235,7 @@ function openImage(index) {
   isZoomed = false;
   modalImg.style.transform = "scale(1)";
   updateModal();
-  imageModal.style.display = "flex";
+  imageModal.classList.add("open");
   document.body.style.overflow = "hidden";
 }
 
@@ -249,32 +266,42 @@ function toggleZoom(e) {
 }
 
 function closeImage() { 
-  imageModal.style.display="none"; 
+  imageModal.classList.remove("open"); 
   audioPlayer.pause(); 
   audioContainer.classList.remove('is-playing');
   document.body.style.overflow="auto"; 
 }
 
 function closeOnBg(e) { if(e.target.tagName !== 'IMG') closeImage(); }
-function openPDF() { document.getElementById("pdfModal").style.display="flex"; }
-function closePDF() { document.getElementById("pdfModal").style.display="none"; }
 
-document.getElementById("contactBtn").onclick = () => { alert("Contact: tomer.jacobson@gmail.com"); };
+function openPDF() { document.getElementById("pdfModal").classList.add("open"); document.body.style.overflow="hidden"; }
+function closePDF() { document.getElementById("pdfModal").classList.remove("open"); document.body.style.overflow="auto"; }
+
+function openContact() { document.getElementById("contactModal").classList.add("open"); document.body.style.overflow="hidden"; }
+function closeContact() { document.getElementById("contactModal").classList.remove("open"); document.body.style.overflow="auto"; }
+
+// Close modals on background click
+window.onclick = (e) => {
+    if (e.target.classList.contains('modal')) {
+        closePDF();
+        closeContact();
+    }
+};
 
 // Keyboard & Swipe
 document.addEventListener('keydown', (e) => {
-  if (imageModal.style.display !== "flex") return;
+  if (!imageModal.classList.contains("open")) return;
   if (e.key === "ArrowLeft") changeImage(-1);
   if (e.key === "ArrowRight") changeImage(1);
   if (e.key === "Escape") closeImage();
 });
 
 let startX = 0;
-imageModal.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+imageModal.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
 imageModal.addEventListener('touchend', e => {
   let diff = startX - e.changedTouches[0].clientX;
   if (Math.abs(diff) > 60) changeImage(diff > 0 ? 1 : -1);
-});
+}, {passive:true});
 </script>
 </body>
 </html>
