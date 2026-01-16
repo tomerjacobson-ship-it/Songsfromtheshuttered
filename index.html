@@ -123,36 +123,55 @@ figcaption{padding:14px; font-size:.9rem; color:var(--muted); border-top:1px sol
 
 .modal-content{
   background:var(--card); border-radius:12px; width:100%;
-  max-width:850px; max-height:92vh; overflow-y:auto;
+  max-width:850px; max-height:92vh; overflow:hidden;
   display:flex; flex-direction:column; position:relative;
 }
 
-.modal-img{ width:100%; height:auto; max-height:65vh; object-fit:contain; background:#000; }
-.audio-container{ padding:20px; background:#16181a; border-top: 1px solid rgba(255,255,255,0.05); }
-#nowPlaying { margin-bottom: 12px; font-weight: bold; display: block; color: var(--accent); }
-audio{ width:100%; height: 40px; }
+.modal-img{ width:100%; height:auto; max-height:70vh; object-fit:contain; background:#000; }
+
+/* COMPACT AUDIO PLAYER */
+.audio-container{ 
+  padding:12px 20px; 
+  background:#16181a; 
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+#nowPlaying { 
+  font-size: 0.85rem; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  color: var(--muted); 
+  flex: 1;
+}
+audio{ height: 32px; width: 200px; filter: invert(100%) hue-rotate(180deg) brightness(1.5); }
 
 .modal-footer{
-  padding:20px; border-top:1px solid rgba(255,255,255,.1);
-  display:flex; flex-direction: column; gap: 10px; align-items: center; background: var(--card);
+  padding:15px 20px; border-top:1px solid rgba(255,255,255,.1);
+  display:flex; align-items: center; background: var(--card);
 }
 
 .close-btn {
-  background: #2a2d30; color: #fff; border: none; padding: 14px 24px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 500;
+  background: #2a2d30; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.8rem; margin-left: auto;
 }
 .pdf-link-btn {
   background: var(--accent); color: #000; font-weight: bold; border: none; width: 100%;
 }
 
-/* Nav Buttons */
+/* NAV BUTTONS */
 .nav-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);
-  padding: 20px 15px; cursor: pointer; z-index: 10001; font-size: 1.5rem; border-radius: 4px;
+  background: rgba(0,0,0,0.5); color: #fff; border: none;
+  width: 50px; height: 50px; cursor: pointer; z-index: 10001; font-size: 1.5rem; 
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
 }
-.nav-btn:hover { background: rgba(255,255,255,0.1); }
-.prev-btn { left: 10px; }
-.next-btn { right: 10px; }
+.nav-btn:hover { background: rgba(255,255,255,0.2); }
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
 
 /* ---------- MOBILE ---------- */
 @media(max-width:640px){
@@ -160,11 +179,13 @@ audio{ width:100%; height: 40px; }
   body { padding: 30px 15px; }
   header { flex-direction: column; align-items: flex-start; }
   h1 { font-size: 1.8rem; }
-  .project-intro { font-size: 1.05rem; padding-left: 15px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  .book-hero { height: 320px; }
-  .pdf-frame { display: none; } 
-  .nav-btn { padding: 15px 10px; font-size: 1.2rem; background: rgba(0,0,0,0.6); }
+  .nav-btn { width: 40px; height: 40px; font-size: 1.1rem; background: rgba(0,0,0,0.7); }
+  .prev-btn { left: 5px; }
+  .next-btn { right: 5px; }
+  .audio-container { flex-direction: column; align-items: flex-start; gap: 8px; }
+  audio { width: 100%; }
+  .modal-content { max-height: 85vh; }
 }
 
 @media(min-width:641px){
@@ -220,7 +241,7 @@ audio{ width:100%; height: 40px; }
 </div>
 
 <div id="imageModal" class="modal">
-  <button class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</button>
+  <button class="nav-btn prev-btn" onclick="changeImage(-1)" aria-label="Previous image">&#10094;</button>
   
   <div class="modal-content">
     <img id="modalImg" class="modal-img">
@@ -229,29 +250,29 @@ audio{ width:100%; height: 40px; }
       <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
     </div>
     <div class="modal-footer">
-      <button class="close-btn" onclick="closeImage()">CLOSE PLAYER</button>
+      <button class="close-btn" onclick="closeImage()">CLOSE</button>
     </div>
   </div>
 
-  <button class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</button>
+  <button class="nav-btn next-btn" onclick="changeImage(1)" aria-label="Next image">&#10095;</button>
 </div>
 
 <div id="pdfModal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content" style="max-width: 1000px;">
     <iframe class="pdf-frame" src="RECORD.pdf"></iframe>
-    <div class="modal-footer">
-        <p style="font-size: 0.85rem; text-align: center; color: var(--muted); margin: 0 0 5px 0;">On mobile? Use the button below to scroll through the book.</p>
+    <div class="modal-footer" style="flex-direction: column; gap: 10px;">
+        <p style="font-size: 0.85rem; text-align: center; color: var(--muted); margin: 0;">On mobile? Use the button below to scroll through the book.</p>
         <a href="RECORD.pdf" target="_blank" class="pdf-link-btn">OPEN FULL BOOK (PDF)</a>
-        <button class="close-btn" onclick="closePDF()">CLOSE WINDOW</button>
+        <button class="close-btn" onclick="closePDF()" style="width: 100%; margin: 0;">CLOSE WINDOW</button>
     </div>
   </div>
 </div>
 
 <div id="contactModal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content" style="max-width: 400px;">
     <div style="padding:40px; text-align:center;">
       <h3 style="margin-top:0">Contact</h3>
-      <p style="color: var(--muted)">tomer.jacobson@gmail.com</p>
+      <p style="color: var(--muted); margin-bottom: 25px;">tomer.jacobson@gmail.com</p>
       <button class="pdf-link-btn" onclick="closeContact()">CLOSE</button>
     </div>
   </div>
@@ -267,49 +288,49 @@ const audioSource=document.getElementById("audioSource");
 const nowPlaying=document.getElementById("nowPlaying");
 
 let currentIndex = 0;
-const caption=n=>n.replace(/\.[^.]+$/,"");
+const caption = n => n.replace(/\.[^.]+$/, "");
 
 // Render Gallery
-images.forEach((n, index)=>{
-  const f=document.createElement("figure");
-  f.innerHTML=`<div class="thumb"><img src="images/${encodeURI(n)}" loading="lazy"></div><figcaption>${caption(n)}</figcaption>`;
-  f.onclick=()=> openImage(index);
+images.forEach((n, index) => {
+  const f = document.createElement("figure");
+  f.innerHTML = `<div class="thumb"><img src="images/${encodeURI(n)}" alt="${caption(n)}" loading="lazy"></div><figcaption>${caption(n)}</figcaption>`;
+  f.onclick = () => openImage(index);
   gallery.appendChild(f);
 });
 
-function openImage(index){
+function openImage(index) {
   currentIndex = index;
   updateModalContent();
   imageModal.classList.add("open");
   document.body.style.overflow = "hidden";
 }
 
-function updateModalContent(){
+function updateModalContent() {
   const n = images[currentIndex];
-  modalImg.src="images/"+encodeURI(n);
-  audioSource.src="music/"+encodeURI(caption(n))+".mp3";
-  nowPlaying.textContent="Listen to: " + caption(n);
+  modalImg.src = "images/" + encodeURI(n);
+  audioSource.src = "music/" + encodeURI(caption(n)) + ".mp3";
+  nowPlaying.innerHTML = `<strong>Now Playing:</strong> ${caption(n)}`;
   audioPlayer.load();
 }
 
-function changeImage(step){
+function changeImage(step) {
   currentIndex += step;
-  if(currentIndex >= images.length) currentIndex = 0;
-  if(currentIndex < 0) currentIndex = images.length - 1;
+  if (currentIndex >= images.length) currentIndex = 0;
+  if (currentIndex < 0) currentIndex = images.length - 1;
   updateModalContent();
 }
 
-function closeImage(){ imageModal.classList.remove("open"); audioPlayer.pause(); document.body.style.overflow="auto"; }
-function openPDF(){ document.getElementById("pdfModal").classList.add("open"); document.body.style.overflow="hidden"; }
-function closePDF(){ document.getElementById("pdfModal").classList.remove("open"); document.body.style.overflow="auto"; }
-function closeContact(){ document.getElementById("contactModal").classList.remove("open"); document.body.style.overflow="auto"; }
+function closeImage() { imageModal.classList.remove("open"); audioPlayer.pause(); document.body.style.overflow = "auto"; }
+function openPDF() { document.getElementById("pdfModal").classList.add("open"); document.body.style.overflow = "hidden"; }
+function closePDF() { document.getElementById("pdfModal").classList.remove("open"); document.body.style.overflow = "auto"; }
+function closeContact() { document.getElementById("contactModal").classList.remove("open"); document.body.style.overflow = "auto"; }
 
-document.getElementById("contactBtn").onclick=()=> { document.getElementById("contactModal").classList.add("open"); document.body.style.overflow="hidden"; };
+document.getElementById("contactBtn").onclick = () => { document.getElementById("contactModal").classList.add("open"); document.body.style.overflow = "hidden"; };
 
-// Global Click listener for closing modals
-window.onclick=(e)=>{ if(e.target.classList.contains('modal')){ closeImage(); closePDF(); closeContact(); } };
+// Close on background click
+window.onclick = (e) => { if (e.target.classList.contains('modal')) { closeImage(); closePDF(); closeContact(); } };
 
-// Keyboard Shortcuts
+// Keyboard Nav
 document.addEventListener('keydown', (e) => {
   if (!imageModal.classList.contains('open')) return;
   if (e.key === "ArrowLeft") changeImage(-1);
@@ -317,20 +338,15 @@ document.addEventListener('keydown', (e) => {
   if (e.key === "Escape") closeImage();
 });
 
-// Mobile Swipe Support
+// Touch Swipe Logic
 let touchstartX = 0;
 let touchendX = 0;
-
-imageModal.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, false);
+imageModal.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
 imageModal.addEventListener('touchend', e => {
   touchendX = e.changedTouches[0].screenX;
-  handleGesture();
-}, false);
-
-function handleGesture() {
-  if (touchendX < touchstartX - 50) changeImage(1); // Swipe Left
-  if (touchendX > touchstartX + 50) changeImage(-1); // Swipe Right
-}
+  if (touchendX < touchstartX - 50) changeImage(1);
+  if (touchendX > touchstartX + 50) changeImage(-1);
+}, {passive: true});
 </script>
 </body>
 </html>
