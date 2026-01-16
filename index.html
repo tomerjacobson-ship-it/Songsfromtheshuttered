@@ -7,7 +7,7 @@
 
 <style>
 :root{
-  --bg:#0f1113;
+  --bg:#070708;
   --card:#0b0c0d;
   --muted:#9aa0a6;
   --accent:#e6e6e6;
@@ -16,9 +16,8 @@
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-html,body{height:100%; margin:0;}
+html,body{height:100%; margin:0; background: var(--bg);}
 body{
-  background:linear-gradient(180deg,#070708,#0f1113);
   color:var(--accent);
   padding:40px 20px;
   display:flex;
@@ -52,31 +51,14 @@ button, .cta-btn, .pdf-link-btn{
   text-decoration: none;
   display: inline-block;
   font-size: 1rem;
-  text-align: center;
 }
 
 button:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
 
-/* ---------- INTRO SECTION ---------- */
-.project-intro {
-  max-width: 850px;
-  margin: 20px 0 60px 0;
-  line-height: 1.8;
-  font-size: 1.15rem;
-  color: var(--muted);
-  border-left: 2px solid rgba(255,255,255,0.1);
-  padding-left: 24px;
-}
-
-.project-intro strong {
-  color: var(--accent);
-  font-weight: 500;
-}
-
 /* ---------- GALLERY ---------- */
 .grid{
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap:var(--gap);
   margin-bottom: 80px;
 }
@@ -89,107 +71,116 @@ figure{
 }
 
 figure:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
-
 .thumb{flex:1;position:relative;background:#000;}
 .thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
-
 figcaption{padding:14px; font-size:.9rem; color:var(--muted); border-top:1px solid rgba(255,255,255,.05); background: #0c0e10;}
 
-/* ---------- BOOK SECTION ---------- */
-.book-section {
-  width: 100%; margin-bottom: 80px; border-radius: 12px; overflow: hidden;
-  position: relative; background: #000; border: 1px solid rgba(255,255,255,0.1);
-}
-.book-hero {
-  width: 100%; height: 400px; background: url('images/Lost in the flood.jpg') center/cover no-repeat;
-  display: flex; align-items: center; justify-content: center; position: relative;
-}
-.book-hero::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.7); }
-.book-content { position: relative; z-index: 2; text-align: center; padding: 20px; }
-.book-content h2 { font-size: 2.2rem; margin-bottom: 10px; }
-
-/* ---------- BTS ---------- */
-.video-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:18px; margin-bottom: 80px;}
-.video-card{ aspect-ratio:16/9; background:#000; border-radius:10px; overflow:hidden; border: 1px solid rgba(255,255,255,.06); position: relative;}
-.video-card iframe, .video-card img{ width:100%; height:100%; border:0; object-fit:cover; }
-
-/* ---------- MODALS ---------- */
+/* ---------- FULLSCREEN IMAGE MODAL ---------- */
 .modal{
-  position:fixed; inset:0; display:none; background:rgba(0,0,0,.96);
-  align-items:center; justify-content:center; z-index:9999;
-  padding:15px;
+  position:fixed; inset:0; display:none; background:rgba(0,0,0,0.98);
+  z-index:9999; flex-direction:column; align-items:center; justify-content:center;
 }
 .modal.open{display:flex}
 
-.modal-content{
-  background:var(--card); border-radius:12px; width:100%;
-  max-width:850px; max-height:92vh; overflow:hidden;
-  display:flex; flex-direction:column; position:relative;
-}
-
-.modal-img{ width:100%; height:auto; max-height:70vh; object-fit:contain; background:#000; }
-
-/* COMPACT AUDIO PLAYER */
-.audio-container{ 
-  padding:12px 20px; 
-  background:#16181a; 
-  border-top: 1px solid rgba(255,255,255,0.05);
+/* The Image Container */
+.modal-view-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+  justify-content: center;
+  overflow: hidden;
 }
-#nowPlaying { 
-  font-size: 0.85rem; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-  color: var(--muted); 
+
+.modal-img {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+
+/* Floating Audio Player Layer */
+.overlay-controls {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  background: rgba(20, 22, 24, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 10002;
+}
+
+#nowPlaying {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
   flex: 1;
 }
-audio{ height: 32px; width: 200px; filter: invert(100%) hue-rotate(180deg) brightness(1.5); }
 
-.modal-footer{
-  padding:15px 20px; border-top:1px solid rgba(255,255,255,.1);
-  display:flex; align-items: center; background: var(--card);
+audio {
+  height: 30px;
+  width: 240px;
+  filter: invert(1) hue-rotate(180deg) brightness(1.5);
 }
 
-.close-btn {
-  background: #2a2d30; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.8rem; margin-left: auto;
+.close-x {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10003;
+  opacity: 0.5;
+  transition: 0.2s;
 }
-.pdf-link-btn {
-  background: var(--accent); color: #000; font-weight: bold; border: none; width: 100%;
-}
+.close-x:hover { opacity: 1; }
 
 /* NAV BUTTONS */
 .nav-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(0,0,0,0.5); color: #fff; border: none;
-  width: 50px; height: 50px; cursor: pointer; z-index: 10001; font-size: 1.5rem; 
+  background: rgba(255,255,255,0.05); color: #fff; border: none;
+  width: 60px; height: 60px; cursor: pointer; z-index: 10001; font-size: 1.5rem; 
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
   transition: background 0.2s;
 }
-.nav-btn:hover { background: rgba(255,255,255,0.2); }
-.prev-btn { left: 20px; }
-.next-btn { right: 20px; }
+.nav-btn:hover { background: rgba(255,255,255,0.15); }
+.prev-btn { left: 30px; }
+.next-btn { right: 30px; }
 
 /* ---------- MOBILE ---------- */
 @media(max-width:640px){
-  :root{--row-height:190px}
-  body { padding: 30px 15px; }
-  header { flex-direction: column; align-items: flex-start; }
-  h1 { font-size: 1.8rem; }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  .nav-btn { width: 40px; height: 40px; font-size: 1.1rem; background: rgba(0,0,0,0.7); }
-  .prev-btn { left: 5px; }
-  .next-btn { right: 5px; }
-  .audio-container { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .overlay-controls {
+    bottom: 20px;
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 15px;
+    gap: 10px;
+  }
   audio { width: 100%; }
-  .modal-content { max-height: 85vh; }
+  .nav-btn { width: 45px; height: 45px; background: rgba(0,0,0,0.5); }
+  .prev-btn { left: 10px; }
+  .next-btn { right: 10px; }
 }
 
-@media(min-width:641px){
-    .pdf-frame { width:100%; height:75vh; border:none; display: block; }
+/* OTHER MODALS (PDF/CONTACT) */
+.standard-modal-content {
+    background: var(--card); border-radius: 12px; padding: 20px;
+    width: 90%; max-width: 800px; position: relative;
 }
 </style>
 </head>
@@ -207,75 +198,30 @@ audio{ height: 32px; width: 200px; filter: invert(100%) hue-rotate(180deg) brigh
     </div>
   </header>
 
-  <section class="project-intro">
-    <p>
-      <strong>Songs from the Shuttered</strong> is a fine-art photographic series co-created over the past decade By Tomer Jacobson and Maxim Golovanov. 
-      The project consists of sixteen meticulously staged photographs, each conceived as a visual interpretation of an iconic song.      
-    </p>
-  </section>
-
   <section class="grid" id="gallery"></section>
-
-  <section class="book-section">
-    <div class="book-hero">
-      <div class="book-content">
-        <h2>SFTS-The Book</h2>
-        <p>Explore the full narrative stories and classic references.</p>
-        <button class="cta-btn" onclick="openPDF()" style="background:var(--accent);color:#000;font-weight:bold;">Open Digital Book</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="bts">
-    <h2 style="margin-bottom:20px; font-weight: 500;">Behind the Scenes</h2>
-    <div class="video-grid">
-      <div class="video-card" onclick="window.open('https://www.facebook.com/reel/1301237869897120','_blank')" style="cursor:pointer">
-        <img src="images/Mercy Seat.jpg" alt="Behind the scenes reel">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(0,0,0,.3)">▶</div>
-      </div>
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/x_eCq8PWFlg" allowfullscreen></iframe></div>
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/Mjla2uB-aRo" allowfullscreen></iframe></div>
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/Lzurm2v99FY" allowfullscreen></iframe></div>
-    </div>
-  </section>
 </div>
 
 <div id="imageModal" class="modal">
-  <button class="nav-btn prev-btn" onclick="changeImage(-1)" aria-label="Previous image">&#10094;</button>
+  <button class="close-x" onclick="closeImage()">&times;</button>
+  <button class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</button>
   
-  <div class="modal-content">
-    <img id="modalImg" class="modal-img">
-    <div class="audio-container">
-      <span id="nowPlaying"></span>
-      <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
-    </div>
-    <div class="modal-footer">
-      <button class="close-btn" onclick="closeImage()">CLOSE</button>
-    </div>
+  <div class="modal-view-container" onclick="closeImageIfBackground(event)">
+    <img id="modalImg" class="modal-img" onclick="toggleZoom(event)">
   </div>
 
-  <button class="nav-btn next-btn" onclick="changeImage(1)" aria-label="Next image">&#10095;</button>
+  <div class="overlay-controls">
+    <div id="nowPlaying"></div>
+    <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
+  </div>
+
+  <button class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</button>
 </div>
 
 <div id="pdfModal" class="modal">
-  <div class="modal-content" style="max-width: 1000px;">
-    <iframe class="pdf-frame" src="RECORD.pdf"></iframe>
-    <div class="modal-footer" style="flex-direction: column; gap: 10px;">
-        <p style="font-size: 0.85rem; text-align: center; color: var(--muted); margin: 0;">On mobile? Use the button below to scroll through the book.</p>
-        <a href="RECORD.pdf" target="_blank" class="pdf-link-btn">OPEN FULL BOOK (PDF)</a>
-        <button class="close-btn" onclick="closePDF()" style="width: 100%; margin: 0;">CLOSE WINDOW</button>
+    <div class="standard-modal-content">
+        <iframe src="RECORD.pdf" style="width:100%; height:70vh; border:none;"></iframe>
+        <button class="cta-btn" onclick="closePDF()" style="width:100%; margin-top:10px;">Close</button>
     </div>
-  </div>
-</div>
-
-<div id="contactModal" class="modal">
-  <div class="modal-content" style="max-width: 400px;">
-    <div style="padding:40px; text-align:center;">
-      <h3 style="margin-top:0">Contact</h3>
-      <p style="color: var(--muted); margin-bottom: 25px;">tomer.jacobson@gmail.com</p>
-      <button class="pdf-link-btn" onclick="closeContact()">CLOSE</button>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -288,18 +234,22 @@ const audioSource=document.getElementById("audioSource");
 const nowPlaying=document.getElementById("nowPlaying");
 
 let currentIndex = 0;
+let isZoomed = false;
+
 const caption = n => n.replace(/\.[^.]+$/, "");
 
-// Render Gallery
+// Build Gallery
 images.forEach((n, index) => {
   const f = document.createElement("figure");
-  f.innerHTML = `<div class="thumb"><img src="images/${encodeURI(n)}" alt="${caption(n)}" loading="lazy"></div><figcaption>${caption(n)}</figcaption>`;
+  f.innerHTML = `<div class="thumb"><img src="images/${encodeURI(n)}" loading="lazy"></div><figcaption>${caption(n)}</figcaption>`;
   f.onclick = () => openImage(index);
   gallery.appendChild(f);
 });
 
 function openImage(index) {
   currentIndex = index;
+  isZoomed = false;
+  modalImg.style.transform = "scale(1)";
   updateModalContent();
   imageModal.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -309,7 +259,7 @@ function updateModalContent() {
   const n = images[currentIndex];
   modalImg.src = "images/" + encodeURI(n);
   audioSource.src = "music/" + encodeURI(caption(n)) + ".mp3";
-  nowPlaying.innerHTML = `<strong>Now Playing:</strong> ${caption(n)}`;
+  nowPlaying.innerHTML = caption(n);
   audioPlayer.load();
 }
 
@@ -320,17 +270,28 @@ function changeImage(step) {
   updateModalContent();
 }
 
-function closeImage() { imageModal.classList.remove("open"); audioPlayer.pause(); document.body.style.overflow = "auto"; }
-function openPDF() { document.getElementById("pdfModal").classList.add("open"); document.body.style.overflow = "hidden"; }
-function closePDF() { document.getElementById("pdfModal").classList.remove("open"); document.body.style.overflow = "auto"; }
-function closeContact() { document.getElementById("contactModal").classList.remove("open"); document.body.style.overflow = "auto"; }
+function toggleZoom(e) {
+  e.stopPropagation();
+  isZoomed = !isZoomed;
+  modalImg.style.transform = isZoomed ? "scale(1.5)" : "scale(1)";
+  modalImg.style.cursor = isZoomed ? "zoom-out" : "zoom-in";
+}
 
-document.getElementById("contactBtn").onclick = () => { document.getElementById("contactModal").classList.add("open"); document.body.style.overflow = "hidden"; };
+function closeImage() { 
+  imageModal.classList.remove("open"); 
+  audioPlayer.pause(); 
+  document.body.style.overflow = "auto"; 
+}
 
-// Close on background click
-window.onclick = (e) => { if (e.target.classList.contains('modal')) { closeImage(); closePDF(); closeContact(); } };
+function closeImageIfBackground(e) {
+    if (e.target.classList.contains('modal-view-container')) closeImage();
+}
 
-// Keyboard Nav
+// Global PDF/Contact
+function openPDF() { document.getElementById("pdfModal").classList.add("open"); }
+function closePDF() { document.getElementById("pdfModal").classList.remove("open"); }
+
+// Keyboard
 document.addEventListener('keydown', (e) => {
   if (!imageModal.classList.contains('open')) return;
   if (e.key === "ArrowLeft") changeImage(-1);
@@ -338,15 +299,13 @@ document.addEventListener('keydown', (e) => {
   if (e.key === "Escape") closeImage();
 });
 
-// Touch Swipe Logic
-let touchstartX = 0;
-let touchendX = 0;
-imageModal.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
+// Swiping
+let startX = 0;
+imageModal.addEventListener('touchstart', e => startX = e.touches[0].clientX);
 imageModal.addEventListener('touchend', e => {
-  touchendX = e.changedTouches[0].screenX;
-  if (touchendX < touchstartX - 50) changeImage(1);
-  if (touchendX > touchstartX + 50) changeImage(-1);
-}, {passive: true});
+  let diff = startX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) changeImage(diff > 0 ? 1 : -1);
+});
 </script>
 </body>
 </html>
