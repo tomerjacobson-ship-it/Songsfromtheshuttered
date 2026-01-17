@@ -74,22 +74,22 @@ figcaption{padding:18px; font-size:1rem; color:var(--muted); border-top:1px soli
 .video-card iframe, .video-card img{ width:100%; height:100%; border:0; object-fit:cover; }
 
 /* ---------- MODALS ---------- */
-.modal{ position:fixed; inset:0; display:none; background:rgba(0,0,0,0.95); z-index:9999; align-items:center; justify-content:center; }
+.modal{ position:fixed; inset:0; display:none; background:rgba(0,0,0,0.96); z-index:9999; align-items:center; justify-content:center; }
 .modal.open{display:flex}
 
 .modal-img {
   max-width: 100%; max-height: 100%; object-fit: contain;
-  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
+  transition: opacity 0.5s ease-in-out, transform 0.3s ease;
   cursor: zoom-in; opacity: 0;
   will-change: opacity;
 }
-.modal-img.loaded { opacity: 1 !important; }
+.modal-img.visible { opacity: 1 !important; }
 
 /* LOADING SPINNER */
 .loader {
   border: 2px solid rgba(255,255,255,0.1);
   border-top: 2px solid var(--accent);
-  border-radius: 50%; width: 30px; height: 30px;
+  border-radius: 50%; width: 35px; height: 35px;
   animation: spin 0.8s linear infinite;
   position: absolute; z-index: 9998; display: none;
 }
@@ -241,7 +241,7 @@ images.forEach((n, index) => {
   gallery.appendChild(f);
 });
 
-// Audio State
+// Audio State listeners
 audioPlayer.onplay = () => audioContainer.classList.add('is-playing');
 audioPlayer.onpause = () => audioContainer.classList.remove('is-playing');
 
@@ -249,34 +249,38 @@ function openImage(index) {
   currentIndex = index;
   isZoomed = false;
   modalImg.style.transform = "scale(1)";
-  updateModal();
+  
+  // For the first opening, we don't need a fade-out delay
   imageModal.classList.add("open");
   document.body.style.overflow = "hidden";
+  updateModal(true); 
 }
 
-function updateModal() {
-  // 1. Reset state
-  modalImg.classList.remove('loaded');
-  modalLoader.style.display = "block";
+function updateModal(isFirstOpen = false) {
+  // 1. Start by fading OUT
+  modalImg.classList.remove('visible');
   audioContainer.classList.remove('is-playing');
   
   const n = images[currentIndex];
-  
-  // 2. Force browser to register the opacity 0 before loading new source
-  requestAnimationFrame(() => {
-    modalImg.src = "images/" + encodeURI(n);
+  const newSrc = "images/" + encodeURI(n);
+
+  // 2. Delay the source swap to allow fade-out to finish (skip delay if first open)
+  const delay = isFirstOpen ? 0 : 400;
+
+  setTimeout(() => {
+    modalLoader.style.display = "block";
+    modalImg.src = newSrc;
     audioSource.src = "music/" + encodeURI(caption(n)) + ".mp3";
-    
+    audioPlayer.load();
+
     modalImg.onload = () => {
       modalLoader.style.display = "none";
-      // Small timeout fixes the caching "no transition" bug
-      setTimeout(() => {
-        modalImg.classList.add('loaded');
-      }, 20);
+      // 3. Fade IN the new image
+      requestAnimationFrame(() => {
+        modalImg.classList.add('visible');
+      });
     };
-    
-    audioPlayer.load();
-  });
+  }, delay);
 }
 
 function changeImage(step) {
@@ -297,6 +301,7 @@ function toggleZoom(e) {
 
 function closeImage() { 
   imageModal.classList.remove("open"); 
+  modalImg.classList.remove('visible');
   audioPlayer.pause(); 
   audioContainer.classList.remove('is-playing');
   document.body.style.overflow="auto"; 
