@@ -79,10 +79,21 @@ figcaption{padding:18px; font-size:1rem; color:var(--muted); border-top:1px soli
 
 .modal-img {
   max-width: 100%; max-height: 100%; object-fit: contain;
-  transition: transform 0.3s ease, opacity 0.5s ease;
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
   cursor: zoom-in; opacity: 0;
+  will-change: opacity;
 }
-.modal-img.loaded { opacity: 1; }
+.modal-img.loaded { opacity: 1 !important; }
+
+/* LOADING SPINNER */
+.loader {
+  border: 2px solid rgba(255,255,255,0.1);
+  border-top: 2px solid var(--accent);
+  border-radius: 50%; width: 30px; height: 30px;
+  animation: spin 0.8s linear infinite;
+  position: absolute; z-index: 9998; display: none;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 .audio-wrap {
   position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
@@ -109,7 +120,6 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
 .prev-btn { left: 0; text-align: left; padding-left: 30px; }
 .next-btn { right: 0; text-align: right; padding-right: 30px; }
 
-/* PDF & CONTACT MODAL STYLING */
 .standard-modal-content {
     background:#0c0e10; padding:30px; border-radius:12px; width:90%; max-width:900px;
     display: flex; flex-direction: column; gap: 20px; position: relative;
@@ -123,7 +133,7 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
   .audio-wrap { bottom: 20px; opacity: 0.5; width: 100%; text-align: center; }
   audio { width: 80%; }
   .nav-btn { display: none; }
-  .standard-modal-content iframe { display: none; } /* Hide PDF frame on mobile */
+  .standard-modal-content iframe { display: none; }
 }
 </style>
 </head>
@@ -176,11 +186,14 @@ audio { height: 30px; width: 220px; filter: invert(1) grayscale(1); }
 </div>
 
 <div id="imageModal" class="modal">
+  <div id="modalLoader" class="loader"></div>
   <button class="close-x" onclick="closeImage()">&times;</button>
   <button class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</button>
+  
   <div style="width:100vw; height:100vh; display:flex; align-items:center; justify-content:center;" onclick="closeOnBg(event)">
     <img id="modalImg" class="modal-img" onclick="toggleZoom(event)">
   </div>
+  
   <div class="audio-wrap" id="audioContainer">
     <audio id="audioPlayer" controls><source id="audioSource" src="" type="audio/mpeg"></audio>
   </div>
@@ -211,6 +224,7 @@ const images=["Her lies.jpg","The Power of love.jpg","Hallowed.jpg","society.jpg
 const gallery=document.getElementById("gallery");
 const imageModal=document.getElementById("imageModal");
 const modalImg=document.getElementById("modalImg");
+const modalLoader=document.getElementById("modalLoader");
 const audioPlayer=document.getElementById("audioPlayer");
 const audioSource=document.getElementById("audioSource");
 const audioContainer=document.getElementById("audioContainer");
@@ -241,13 +255,28 @@ function openImage(index) {
 }
 
 function updateModal() {
+  // 1. Reset state
   modalImg.classList.remove('loaded');
+  modalLoader.style.display = "block";
   audioContainer.classList.remove('is-playing');
+  
   const n = images[currentIndex];
-  modalImg.src = "images/" + encodeURI(n);
-  audioSource.src = "music/" + encodeURI(caption(n)) + ".mp3";
-  modalImg.onload = () => modalImg.classList.add('loaded');
-  audioPlayer.load();
+  
+  // 2. Force browser to register the opacity 0 before loading new source
+  requestAnimationFrame(() => {
+    modalImg.src = "images/" + encodeURI(n);
+    audioSource.src = "music/" + encodeURI(caption(n)) + ".mp3";
+    
+    modalImg.onload = () => {
+      modalLoader.style.display = "none";
+      // Small timeout fixes the caching "no transition" bug
+      setTimeout(() => {
+        modalImg.classList.add('loaded');
+      }, 20);
+    };
+    
+    audioPlayer.load();
+  });
 }
 
 function changeImage(step) {
@@ -274,14 +303,11 @@ function closeImage() {
 }
 
 function closeOnBg(e) { if(e.target.tagName !== 'IMG') closeImage(); }
-
 function openPDF() { document.getElementById("pdfModal").classList.add("open"); document.body.style.overflow="hidden"; }
 function closePDF() { document.getElementById("pdfModal").classList.remove("open"); document.body.style.overflow="auto"; }
-
 function openContact() { document.getElementById("contactModal").classList.add("open"); document.body.style.overflow="hidden"; }
 function closeContact() { document.getElementById("contactModal").classList.remove("open"); document.body.style.overflow="auto"; }
 
-// Close modals on background click
 window.onclick = (e) => {
     if (e.target.classList.contains('modal')) {
         closePDF();
@@ -289,7 +315,6 @@ window.onclick = (e) => {
     }
 };
 
-// Keyboard & Swipe
 document.addEventListener('keydown', (e) => {
   if (!imageModal.classList.contains("open")) return;
   if (e.key === "ArrowLeft") changeImage(-1);
